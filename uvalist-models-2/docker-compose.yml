@@ -1,0 +1,54 @@
+# isa-mysql:
+#    image: mysql:5.7.10
+#    environment:
+#     MYSQL_DATABASE: cs4501
+#     MYSQL_USER: www
+#     DATABASE_PASSWORD: S3cure
+#     MYSQL_ROOT_PASSWORD: logmeon
+isa-models:
+   image: tp33/django:1.2
+   external_links:
+     - mysql:db
+   ports:
+     - "8000:8000"
+   volumes:
+     - /Users/aivener/ISA-Project/uvalist:/app
+   command: "python manage.py runmodwsgi"
+# isa-exp:
+#    image: tp33/django:1.2
+#    links:
+#      - isa-mysql:db
+# isa-web:
+#    image: tp33/django:1.2
+#    links:
+#      - isa-mysql:db
+
+# models:
+#    image: tp33/django:1.2
+#    external_links:
+#       - mysql:db
+#    ports:
+#       - "8001:8000"
+#    volumes:
+#       - /Users/aivener/ISA-Project/uvalist-models:/app
+#    command: "python manage.py runmodwsgi"
+
+# exp:
+#    image: tp33/django:1.2
+#    links:
+#       - models:models-api
+#    ports:
+#       - "8002:8000"
+#    volumes:
+#       - /Users/aivener/ISA-Project/uvalist-exp:/app
+#    command: "python manage.py runmodwsgi"
+
+# web:
+#    image: tp33/django:1.2
+#    links:
+#       - exp:exp-api
+#    ports:
+#       - "8000:8000"
+#    volumes:
+#       - /Users/aivener/ISA-Project/uvalist-web:/app
+#    command: "python manage.py runmodwsgi"
