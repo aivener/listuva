@@ -34,7 +34,7 @@ models:
    command: "python manage.py runmodwsgi"
 
 exp:
-   image: tp33/django:1.2
+   build: .
    links:
       - models:modelsul
    ports:
@@ -44,7 +44,7 @@ exp:
    command: "python manage.py runmodwsgi"
 
 web:
-   image: tp33/django:1.2
+   build: .
    links:
       - exp:expul
    ports:
