@@ -37,6 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'expul',
+    'mod_wsgi.server',
+
 )
 
 MIDDLEWARE_CLASSES = (
