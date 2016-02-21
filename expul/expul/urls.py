@@ -20,6 +20,6 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^api/v1/maketable$', views.maketable, name="maketable"),
+    url(r'^api/v1/maketable$', views.makeTable, name="makeTable"),
 
 ]
