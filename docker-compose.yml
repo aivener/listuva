@@ -31,7 +31,7 @@ models:
       - "8001:8000"
    volumes:
       - /Users/aivener/ISA-Project/modelsul:/app
-   command: "python manage.py runmodwsgi"
+   command: "python manage.py runmodwsgi --reload-on-change"
 
 exp:
    build: .
@@ -41,7 +41,7 @@ exp:
       - "8002:8000"
    volumes:
       - /Users/aivener/ISA-Project/expul:/app
-   command: "python manage.py runmodwsgi"
+   command: "python manage.py runmodwsgi --reload-on-change"
 
 web:
    build: .
@@ -51,4 +51,4 @@ web:
       - "8000:8000"
    volumes:
       - /Users/aivener/ISA-Project/frontul:/app
-   command: "python manage.py runmodwsgi"
+   command: "python manage.py runmodwsgi --reload-on-change"
