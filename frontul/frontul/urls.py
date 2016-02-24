@@ -19,5 +19,5 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^home/', views.getCells, name="getCells"),
+    url(r'^home/', views.displayCells, name="displayCells"),
 ]

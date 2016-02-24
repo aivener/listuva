@@ -21,5 +21,8 @@ from . import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^api/v1/maketable$', views.makeTable, name="makeTable"),
+    url(r'^api/v1/postbycat/(?P<catID>\d+)$', views.getPostsByCategory, name="postsByCat"),
+    url(r'^api/v1/postbysubcat/(?P<subcatID>\d+)$', views.getPostsBySubcategory, name="postsBySubcat"),
+
 
 ]
