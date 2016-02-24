@@ -10,11 +10,11 @@ import requests
 #get individual item info (if click it) -- price, comments, etc. - build it together, serialize into JSON, pass to top layer to turn into something to look at
 
 def makeTable(request):
-	#get json of all categories
+	#get json of all categories and subcategories
 	all_cats = requests.get('http://modelsul:8000/api/v1/category')
 	all_subcats = requests.get('http://modelsul:8000/api/v1/subcategory')
-	new_info = {}
-	deser_cats = json.loads(all_cats.text)
+	new_info = {} #set up dictionary to return
+	deser_cats = json.loads(all_cats.text) #deserialize
 	deser_subcats = json.loads(all_subcats.text)
 	for cat in deser_cats:	
 		curr_cat_name = str(cat['fields']['title'])
@@ -23,12 +23,4 @@ def makeTable(request):
 		for subcat in deser_subcats:
 			if(subcat['fields']['category'] == curr_cat_id):
 				new_info[curr_cat_name].append(subcat['fields']['title'])
-	ser = json.dumps(new_info)
-	return HttpResponse(ser, content_type='application/json')
-	
-
-	#get list of all posts
-		#python request to models/api/v1/posts which returns json of all the posts
-	#take that json, and get json of other stuff needed on home page
-	#new json object with all the info 
-	#return that json object via a url in this project
+	return JsonResponse(new_info, content_type='application/json')
