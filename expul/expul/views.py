@@ -19,10 +19,13 @@ def makeTable(request): #returns json: key=category, value=subcategory
 	for cat in deser_cats:	
 		curr_cat_name = str(cat['fields']['title'])
 		curr_cat_id = cat['pk']
-		new_info[curr_cat_name] = []
+		new_info[curr_cat_name] = {}
+		new_info[curr_cat_name]["catID"] = curr_cat_id
+		temp_value_arr = {}
 		for subcat in deser_subcats:
 			if(subcat['fields']['category'] == curr_cat_id):
-				new_info[curr_cat_name].append(subcat['fields']['title'])
+				temp_value_arr[subcat['fields']['title']] = subcat['pk']
+		new_info[curr_cat_name]["subcategories"] = temp_value_arr
 	return JsonResponse(new_info, content_type='application/json')
 
 def getPostsByCategory(request, catID): #returns json: key=categoryID, value=posts in that cat
@@ -53,7 +56,7 @@ def getPostsBySubcategory(request, subcatID): #returns json: key=subcatID, value
 		if(int(curr_subcat_id) == int(subcatID)):
 			sorted_posts[subcatID] = []
 			for post in deser_posts:
-				if(post['fields']['subcategory'] == 1):
+				if(int(post['fields']['subcategory']) == int(subcatID)):
 					sorted_posts[subcatID].append(post)
 	return JsonResponse(sorted_posts, content_type='application/json')
 
