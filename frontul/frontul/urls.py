@@ -20,5 +20,6 @@ from . import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/', views.displayCells, name="displayCells"),
-    url(r'^post/(?P<catID>\d+)$', views.displayPosts, name="displayPosts"),
+    url(r'^catpost/(?P<catID>\d+)$', views.displayCatPosts, name="displayPosts"),
+    url(r'^subcatpost/(?P<subCatID>\d+)$', views.displaySubCatPosts, name="displaySubCatPosts"),
 ]

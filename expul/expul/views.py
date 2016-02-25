@@ -81,7 +81,3 @@ def getSubcatName(request, subcatID):
 			curr_subcat_name = str(subcat['fields']['title'])
 			new_info["subcatName"] = curr_subcat_name
 	return JsonResponse(new_info, content_type='application/json')
-
-
-
-

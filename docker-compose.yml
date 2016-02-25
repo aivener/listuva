@@ -12,7 +12,7 @@
 #    ports:
 #      - "8000:8000"
 #    volumes:
-#      - /Users/aivener/ISA-Project/uvalist-models:/app
+#      - /Users/niti/ISA-Project/uvalist-models:/app
 #    command: "python manage.py runmodwsgi"
 # isa-exp:
 #    image: tp33/django:1.2
@@ -30,7 +30,7 @@ models:
    ports:
       - "8001:8000"
    volumes:
-      - /Users/aivener/ISA-Project/modelsul:/app
+      - /Users/niti/ISA-Project/listuva/modelsul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
 
 exp:
@@ -40,7 +40,7 @@ exp:
    ports:
       - "8002:8000"
    volumes:
-      - /Users/aivener/ISA-Project/expul:/app
+      - /Users/niti/ISA-Project/listuva/expul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
 
 web:
@@ -50,5 +50,5 @@ web:
    ports:
       - "8000:8000"
    volumes:
-      - /Users/aivener/ISA-Project/frontul:/app
+      - /Users/niti/ISA-Project/listuva/frontul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
