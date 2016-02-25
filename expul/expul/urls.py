@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'^api/v1/postbycat/(?P<catID>\d+)$', views.getPostsByCategory, name="postsByCat"),
     url(r'^api/v1/postbysubcat/(?P<subcatID>\d+)$', views.getPostsBySubcategory, name="postsBySubcat"),
     url(r'^api/v1/getcatname/(?P<catID>\d+)$', views.getCatName, name="getCatName"),
+    url(r'^api/v1/getsubcatname/(?P<subcatID>\d+)$', views.getSubcatName, name="getSubcatName"),
+
 ]
