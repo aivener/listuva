@@ -44,6 +44,7 @@ def getPostsByCategory(request, catID): #returns json: key=categoryID, value=pos
 					sorted_posts[post['pk']]['fields'] = fields
 	return JsonResponse(sorted_posts, content_type='application/json')
 
+#make this match above
 def getPostsBySubcategory(request, subcatID): #returns json: key=subcatID, value=posts in that subcat
 	all_posts = requests.get('http://modelsul:8000/api/v1/post')
 	all_subcats = requests.get('http://modelsul:8000/api/v1/subcategory')
@@ -59,3 +60,20 @@ def getPostsBySubcategory(request, subcatID): #returns json: key=subcatID, value
 				if(int(post['fields']['subcategory']) == int(subcatID)):
 					sorted_posts[subcatID].append(post)
 	return JsonResponse(sorted_posts, content_type='application/json')
+
+def getCatName(request, catID): #returns json key="catname", value=the name
+	all_cats = requests.get('http://modelsul:8000/api/v1/category')
+	new_info = {} #set up dictionary to return
+	deser_cats = json.loads(all_cats.text) #deserialize
+	for cat in deser_cats:
+		curr_cat_id = int(cat['pk'])
+		if(curr_cat_id == int(catID)):
+			curr_cat_name = str(cat['fields']['title'])
+			new_info["catName"] = curr_cat_name
+	return JsonResponse(new_info, content_type='application/json')
+
+
+
+
+
+
