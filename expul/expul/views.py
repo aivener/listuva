@@ -34,14 +34,14 @@ def getPostsByCategory(request, catID): #returns json: key=categoryID, value=pos
 	sorted_posts = {}
 	deser_posts = json.loads(all_posts.text)
 	deser_cats = json.loads(all_cats.text)
-	for cat in deser_cats:
-		curr_cat_name = str(cat['fields']['title'])
-		curr_cat_id = cat['pk']
+	for curr_cat in deser_cats:
+		curr_cat_id = curr_cat['pk']
 		if(int(curr_cat_id) == int(catID)):
-			sorted_posts[catID] = []
 			for post in deser_posts:
 				if(int(post['fields']['category']) == int(catID)):
-					sorted_posts[catID].append(post)
+					fields = post['fields']
+					sorted_posts[post['pk']] = {}
+					sorted_posts[post['pk']]['fields'] = fields
 	return JsonResponse(sorted_posts, content_type='application/json')
 
 def getPostsBySubcategory(request, subcatID): #returns json: key=subcatID, value=posts in that subcat
