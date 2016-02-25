@@ -1,3 +1,9 @@
+
+{% for key, value in catName.items %}
+<h1> {{value}} </h1>
+{% endfor %}
+
+
 {% for key, value in cells_dict.items %}
   {% for x, y in value.items %}
     {% for x, y in y.items %}
