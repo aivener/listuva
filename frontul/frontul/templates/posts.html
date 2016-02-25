@@ -1,6 +1,19 @@
-<h1> ss </h1>
+{% for key, value in cells_dict.items %}
+  {% for x, y in value.items %}
+    {% for x, y in y.items %}
+      {% if x == 'title'%}
+      <p> Title of Post {{y}} </p>
+      {% endif %}
 
-{% for key, value in c%}
-	Category: {{ key}} <br>
-	Subcategories: {{ value }}  <br><br>
+      {% if x == 'dateTimePosted'%}
+      <p> Date Posted {{y}} </p>
+      {% endif %}
+
+      {% if x == 'price' %}
+      <p> Price {{y}} </p>
+      {% endif %}
+
+    {% endfor %}
+  {% endfor %}
+
 {% endfor %}

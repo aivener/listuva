@@ -15,6 +15,6 @@ def displayCells(request):
 def displayPosts(request,catID):
 	c = requests.get('http://expul:8000/api/v1/postbycat/' + catID)
 	deser = json.loads(c.text)
-	#return render(request, 'posts.html', {'cells_dict':deser})
+	return render(request, 'posts.html', {'cells_dict':deser})
 	#return HttpResponse(c)
-	return JsonResponse(deser, content_type='json', safe=False)
+	#return JsonResponse(deser, content_type='json', safe=False)
