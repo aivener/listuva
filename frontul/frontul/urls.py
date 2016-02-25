@@ -20,4 +20,5 @@ from . import views
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^home/', views.displayCells, name="displayCells"),
+    url(r'^post/(?P<catID>\d+)$', views.displayPosts, name="displayPosts"),
 ]

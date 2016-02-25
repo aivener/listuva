@@ -16,7 +16,7 @@ def makeTable(request): #returns json: key=category, value=subcategory
 	new_info = {} #set up dictionary to return
 	deser_cats = json.loads(all_cats.text) #deserialize
 	deser_subcats = json.loads(all_subcats.text)
-	for cat in deser_cats:	
+	for cat in deser_cats:
 		curr_cat_name = str(cat['fields']['title'])
 		curr_cat_id = cat['pk']
 		new_info[curr_cat_name] = {}
@@ -59,9 +59,3 @@ def getPostsBySubcategory(request, subcatID): #returns json: key=subcatID, value
 				if(int(post['fields']['subcategory']) == int(subcatID)):
 					sorted_posts[subcatID].append(post)
 	return JsonResponse(sorted_posts, content_type='application/json')
-
-
-
-
-
-

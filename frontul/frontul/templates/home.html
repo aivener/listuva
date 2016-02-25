@@ -1,4 +1,11 @@
 {% for key, value in cells_dict.items %}
-	Category: {{ key}} <br>
-	Subcategories: {{ value }}  <br><br>
+	<a>{{ key}}
+	{% for v, s in value.items %}
+		{%if v == 'catID'%}
+		<a href="{% url 'displayPosts' s %}" > {{key}} </a>
+		<h1> id is {{s}} </h1>
+		{% endif %}
+
+		<br>
+	{% endfor %}
 {% endfor %}
