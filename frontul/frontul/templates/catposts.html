@@ -120,17 +120,28 @@
             {% for x, y in value.items %}
               <div class="thumbnail">
                 <div class="caption">
+
+              {% for x, y in y.items %}
+                {% if x == 'price' %}
+                  <span class="badge pull-right">  ${{y}}</span>
+                {% endif %}
+              {% endfor %}
+              
               {% for x, y in y.items %}
                 <!--  <img class="group list-group-image" src="http://placehold.it/450x250/000/fff" alt="" /> -->
-
                   {% if x == 'title'%}
                     <h4 class="group inner list-group-item-heading">{{y}}</h4>
                   {% endif %}
+              {% endfor %}
+
+              {% for x, y in y.items %}
                   {% if x == 'summary' %}
                     <p class="group inner list-group-item-text"> {{y}} </p>
                   {% endif %}
-
               {% endfor %}
+
+
+
               </div>
             </div>
             {% endfor %}
