@@ -82,6 +82,21 @@ def getSubcatName(request, subcatID):
 			new_info["subcatName"] = curr_subcat_name
 	return JsonResponse(new_info, content_type='application/json')
 
-
+def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", value= the name
+	all_cats = requests.get('http://modelsul:8000/api/v1/category')
+	all_subcats = requests.get('http://modelsul:8000/api/v1/subcategory')
+	new_info = {} 
+	deser_cats = json.loads(all_cats.text)
+	deser_subcats = json.loads(all_subcats.text)
+	for subcat in deser_subcats:
+		curr_subcat_id = int(subcat['pk'])
+		if(curr_subcat_id == int(subcatID)):
+			catID = str(subcat['fields']['category'])
+			for cat in deser_cats:
+				curr_cat_id = int(cat['pk'])
+				if(curr_cat_id == int(catID)):
+					new_info["categoryName"] = str(cat['fields']['title'])
+					return JsonResponse(new_info, content_type='application/json')
+	return JsonResponse(new_info, content_type='application/json')
 
 

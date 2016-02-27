@@ -25,5 +25,5 @@ urlpatterns = [
     url(r'^api/v1/postbysubcat/(?P<subcatID>\d+)$', views.getPostsBySubcategory, name="postsBySubcat"),
     url(r'^api/v1/getcatname/(?P<catID>\d+)$', views.getCatName, name="getCatName"),
     url(r'^api/v1/getsubcatname/(?P<subcatID>\d+)$', views.getSubcatName, name="getSubcatName"),
-
+    url(r'^api/v1/catname/(?P<subcatID>\d+)$', views.getCatNameFromSubcat, name="getCatNameFromSubcat"),
 ]
