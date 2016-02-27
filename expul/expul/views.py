@@ -99,4 +99,3 @@ def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", v
 					return JsonResponse(new_info, content_type='application/json')
 	return JsonResponse(new_info, content_type='application/json')
 
-

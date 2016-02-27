@@ -12,9 +12,16 @@ def displayCells(request):
 	return render(request, 'home.html', {'cells_dict':deser})
 	#return JsonResponse(cells_dict, content_type='json', safe=False)
 
-def displayPosts(request,catID):
+def displayCatPosts(request,catID):
 	c = requests.get('http://expul:8000/api/v1/postbycat/' + catID)
 	deser = json.loads(c.text)
 	x = requests.get('http://expul:8000/api/v1/getcatname/' + catID)
 	deser1 = json.loads(x.text)
-	return render(request, 'posts.html', {'cells_dict':deser, 'catName': deser1})
+	return render(request, 'catposts.html', {'cells_dict':deser, 'catName': deser1})
+
+def displaySubCatPosts(request,subCatID):
+	c = requests.get('http://expul:8000/api/v1/postbysubcat/' + subCatID)
+	deser = json.loads(c.text)
+	x = requests.get('http://expul:8000/api/v1/getsubcatname/' + subCatID)
+	deser1 = json.loads(x.text)
+	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1})

@@ -1,8 +1,3 @@
-
-{% extends "base.html" %}
-
-{% block content %}
-<style>
 /* this is the bit that gives the border color */
 div.list-category h3.title
 {
@@ -48,33 +43,10 @@ padding-right: 0;
 overflow: hidden;
 }
 
-
-
-</style>
-
-<div class="container">
-	<div class="row">
-	{% for key, value in cells_dict.items %}
-		<div class="col-md-6 list-category text-primary">
-				{% for v, s in value.items %}
-				{% if v == 'catID' %}
-				<h3 class="title"><a href="{% url 'displayPosts' s %}">{{key}}</a></h3>
-				{% endif %}
-
-				{% endfor %}
-
-		{% for v, s in value.items %}
-				{% if v == 'subcategories' %}
-					<div class="list-group">
-						{% for x, y in s.items %}
-							<a href="{% url 'displaySubCatPosts' y %}" class="list-group-item">{{x}}</a>
-						{% endfor %}
-					</div>
-				{% endif %}
-		{% endfor %}
-	</div>
-	{% endfor %}
-	</div>
-</div>
-
-{% endblock %}
+.truncate
+{
+width: 80%;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+}
