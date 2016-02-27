@@ -24,4 +24,6 @@ def displaySubCatPosts(request,subCatID):
 	deser = json.loads(c.text)
 	x = requests.get('http://expul:8000/api/v1/getsubcatname/' + subCatID)
 	deser1 = json.loads(x.text)
-	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1})
+	y = requests.get('http://expul:8000/api/v1/catname/' + subCatID)
+	deser2 = json.loads(y.text)
+	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1, 'catName': deser2})
