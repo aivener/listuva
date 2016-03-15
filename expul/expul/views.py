@@ -99,3 +99,42 @@ def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", v
 					return JsonResponse(new_info, content_type='application/json')
 	return JsonResponse(new_info, content_type='application/json')
 
+
+def login_exp_api(request, username, password): #takes in data from frontul login method to authenticate
+	#get all students
+	student = requests.get('http://modelsul:800/api/v1/student/' + username) #TODO: add this url
+	#check if that returned a student
+	if student:
+		#get hashed password of that username
+		#check if equal to password passed into the method
+		#if match
+			#call the modelsul layer to create the authenticator with requests.post (pass user id)
+			new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/' + user_id)
+			return new_auth
+		else, 
+			return {} #check on this
+	else:
+		#return error that username is invalid
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

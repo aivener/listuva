@@ -4,7 +4,11 @@ from django.core import serializers
 from .models import *
 from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt 
-
+import hmac
+import os
+import settings
+import datetime
+from django.utils.timezone import utc
 
 def index(request):
     return HttpResponse("Hello, world! Welcome to the very beginning of UVaList.")
@@ -72,3 +76,17 @@ def comment(request, comment_id):
         return HttpResponse('')
     result = serializers.serialize('json', Comment.objects.filter(id=comment_id))
     return HttpResponse(result, content_type='json')
+
+@csrf_exempt
+def authenticator(request, user_id, authenticator):
+    #creating new one
+    if request.method == "POST":
+        user_id = user_id
+        authenticator1 = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
+        date_created = datetime.datetime.now()
+        result = serializers.serialize('json', Authenticator.objects.filter(authenticator=authenticator1))
+        return HttpResponse(result, content_type='json')
+    #getting existing one
+    result = serializers.serialize('json', Authenticator.objects.filter(authenticator=authenticator))
+    return HttpResponse(result, content_type='json')
+

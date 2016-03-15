@@ -35,4 +35,6 @@ urlpatterns = [
     url(r'^api/v1/comment$', views.list_comment, name="list_comment"),
     url(r'^api/v1/comment/(?P<comment_id>\d+)$', views.comment, name="comment"),
 
+    url(r'^api/v1/authenticator/(?P<user_id>\d+)$', views.authenticator, name="authenticator"),
+
 ]
