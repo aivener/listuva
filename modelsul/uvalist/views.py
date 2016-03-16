@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt 
 import hmac
 import os
-import settings
+# import settings
 import datetime
 from django.utils.timezone import utc
 
@@ -17,10 +17,9 @@ def list_category(request):
     result = serializers.serialize('json', Category.objects.all())
     return HttpResponse(result, content_type='json')
 
-@csrf_exempt
 def category(request, category_id):
     if request.method == "POST":
-        title = request.GET.get('title', 'title did not work')
+        title = request.POST.get('title', 'title did not work')
         category = Category.objects.create(title=title)
         category.save()
         curr_id = category.id
@@ -41,15 +40,14 @@ def list_student(request):
     result = serializers.serialize('json', Student.objects.all())
     return HttpResponse(result, content_type='json')
 
-@csrf_exempt
 def student(request, student_id):
     if request.method == "POST":
-        name = request.GET.get('name', 'name didnt work')
-        gender = request.GET.get('gender', 'False')
-        year = request.GET.get('year', '123')
-        email = request.GET.get('email', 'email didnt work')
-        password = request.GET.get('password', 'password didnt work')
-        student = Student.objects.create(name='hi', gender=gender, year=year, email=email, password=password)
+        name = request.POST.get('name', 'name didnt work')
+        gender = request.POST.get('gender', 'False')
+        year = request.POST.get('year', '123')
+        email = request.POST.get('email', 'email didnt work')
+        password = request.POST.get('password', 'password didnt work')
+        student = Student.objects.create(name=name, gender=gender, year=year, email=email, password=password)
         student.save()
         curr_id = student.id
         result = serializers.serialize('json', Student.objects.filter(id=curr_id))
@@ -69,7 +67,6 @@ def list_comment(request):
     result = serializers.serialize('json', Comment.objects.all())
     return HttpResponse(result, content_type='json')
 
-@csrf_exempt
 def comment(request, comment_id):
     if request.method == "DELETE":
         Comment.objects.filter(id=comment_id).delete()
@@ -77,7 +74,6 @@ def comment(request, comment_id):
     result = serializers.serialize('json', Comment.objects.filter(id=comment_id))
     return HttpResponse(result, content_type='json')
 
-@csrf_exempt
 def authenticator(request, user_id, authenticator):
     #creating new one
     if request.method == "POST":

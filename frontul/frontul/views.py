@@ -1,4 +1,5 @@
 from django.http import HttpResponse
+
 from django.http import JsonResponse
 from django.core import serializers
 from django.shortcuts import get_object_or_404
@@ -6,8 +7,11 @@ import json
 import requests
 #import exp_srvc_errors  # where I put some error codes the exp srvc can return
 from django.shortcuts import render
+from django.shortcuts import HttpResponseRedirect
+
 from django.core.urlresolvers import reverse
 from .forms import * 
+
 
 def displayCells(request):
 	cats_subcats = requests.get('http://expul:8000/api/v1/maketable')
@@ -46,14 +50,14 @@ def login(request):
 	password = f.cleaned_data['password']
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
-	resp = requests.get('http://expul:8000/api/v1/login_exp_api/username=' + username + '&password=' + password)
-	if not resp or not resp['ok']:
+	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password})
+	if not resp:
 		# couldn't log them in, send them back to login page with error
 		return render(request, 'login.html')
 	# logged them in. set their login cookie and redirect to back to wherever they came from
-	authenticator = resp['authenticator']
+	# authenticator = resp['authenticator']
 	response = HttpResponseRedirect(next)
-	response.set_cookie("auth", authenticator)
+	# response.set_cookie("auth", authenticator)
 	return response
 
 
@@ -73,6 +77,3 @@ def login(request):
 # 			return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_post")
 # 	...
 # 	return render("create_post_success.html", ...)
-=======
-	
->>>>>>> 2351ecc56dc2dd7b90ad263c44656666a194c33b
