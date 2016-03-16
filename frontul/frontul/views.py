@@ -27,8 +27,9 @@ def displaySubCatPosts(request,subCatID):
 	deser = json.loads(c.text)
 	x = requests.get('http://expul:8000/api/v1/getsubcatname/' + subCatID)
 	deser1 = json.loads(x.text)
-<<<<<<< HEAD
-	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1})
+	y = requests.get('http://expul:8000/api/v1/catname/' + subCatID)
+	deser2 = json.loads(y.text)
+	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1, 'catName': deser2})
 
 #called when user submits login form
 def login(request):
@@ -72,3 +73,6 @@ def login(request):
 # 			return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_post")
 # 	...
 # 	return render("create_post_success.html", ...)
+=======
+	
+>>>>>>> 2351ecc56dc2dd7b90ad263c44656666a194c33b
