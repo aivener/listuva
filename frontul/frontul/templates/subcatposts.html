@@ -88,6 +88,10 @@
     margin: 0 0 11px;
 }
 
+.headitem{
+  color: #428bca;
+}
+
 #title
 {
     display: block;
@@ -101,7 +105,9 @@
 <body>
 <div class="container posts">
   {% for key, value in subCatName.items %}
-    <h3  class = "row" id="title"><a href="#">{{value}}</a></h3>
+    {% for k, v in catName.items %}
+    <h3  class = "row headitem" id="title">{{v}} -> {{value}} </h3>
+    {% endfor %}
   {% endfor %}
     <div class = "row posts">
         <div class="btn-group">
@@ -122,7 +128,7 @@
                       <span class="badge pull-right">  ${{y}}</span>
                     {% endif %}
                   {% endfor %}
-                  
+
                   {% for x, y in y.items %}
                     <!--  <img class="group list-group-image" src="http://placehold.it/450x250/000/fff" alt="" /> -->
                       {% if x == 'title'%}

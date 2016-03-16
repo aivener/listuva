@@ -27,6 +27,7 @@ def displaySubCatPosts(request,subCatID):
 	deser = json.loads(c.text)
 	x = requests.get('http://expul:8000/api/v1/getsubcatname/' + subCatID)
 	deser1 = json.loads(x.text)
+<<<<<<< HEAD
 	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1})
 
 #called when user submits login form
