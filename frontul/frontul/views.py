@@ -31,10 +31,9 @@ def displaySubCatPosts(request,subCatID):
 
 #called when user submits login form
 def login(request):
-	#????
 	if request.method == 'GET':
 		l_form = LoginForm()
-		#next = request.GET.get('next') or reverse('home')
+		next = request.GET.get('login') or reverse('displayCells') #??
 		return render(request, 'login.html', {'form': l_form})
 	
 	f = LoginForm(request.POST)
@@ -44,7 +43,7 @@ def login(request):
 	username = f.cleaned_data['username']
 	password = f.cleaned_data['password']
 	#next = f.cleaned_data.get('next') or reverse('home')
-	next = reverse('displayCells')
+	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 	resp = requests.get('http://expul:8000/api/v1/login_exp_api/username=' + username + '&password=' + password)
 	if not resp or not resp['ok']:
 		# couldn't log them in, send them back to login page with error
