@@ -101,23 +101,29 @@ def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", v
 
 
 def login_exp_api(request): #takes in data from frontul login method to authenticate
-	username = request.POST.get('username', 'default')
-	return JsonResponse({"hi": username}, content_type='application/json')
+	#input_username = request.POST.get('username', 'default')
+	#input_password = request.POST.get('password', 'default')
+	input_username = "student1"
+	input_password = "123"
+	#return JsonResponse({"username": input_username}, content_type='application/json')
 	#get all students
-	# student = requests.get('http://modelsul:800/api/v1/student/' + username) #TODO: add this url
+	student_with_username = requests.get('http://modelsul:8000/api/v1/student/' + input_username)
+	deser_student = json.loads(student_with_username.text) #TODO: add this url
 	#check if that returned a student
-	# if student:
+	if student_with_username:
 	# 	#get hashed password of that username
 	# 	#check if equal to password passed into the method
-	# 	#if match
-	# 		#call the modelsul layer to create the authenticator with requests.post (pass user id)
-	# 	# new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/' + user_id)
-	# 	# return new_auth
-	# 	return {"hi": username}
-	# else:
-	# 		return {} #check on this
-	
-
+		for curr_student in deser_student:
+			real_pword = curr_student['fields']['password']
+			if str.strip(real_pword) == str.strip(input_password):
+				#successful match
+				new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/' + str(curr_student['pk']))
+				return JsonResponse(new_auth, content_type="application/json", safe=False)
+			else:
+				return JsonResponse({"hi": "unsuccesful"}, content_type="application/json")
+		return JsonResponse({"bye": "unsuccesful"}, content_type="application/json")
+	else:
+		return JsonResponse({"i": "I"}, content_type="application/json")
 
 
 

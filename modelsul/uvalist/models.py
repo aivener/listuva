@@ -42,6 +42,6 @@ class Comment(models.Model):
 		return self.text
 
 class Authenticator(models.Model):
-	user_id = models.ForeignKey(Student)
-	authenticator = models.CharField(max_length=255, primary_key=True)
+	user_id	 = models.ForeignKey(Student)
+	authenticator = models.CharField(max_length=254, primary_key=True)
 	date_created = models.DateTimeField()

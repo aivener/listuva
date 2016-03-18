@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt 
 import hmac
 import os
-# import settings
+from django.conf import settings
 import datetime
 from django.utils.timezone import utc
 
@@ -55,6 +55,11 @@ def student(request, student_id):
     result = serializers.serialize('json', Student.objects.filter(id=student_id))
     return HttpResponse(result, content_type='json')
 
+#working heres
+def studentByUsername(request, name):
+    result = serializers.serialize('json', Student.objects.filter(name=name))
+    return HttpResponse(result, content_type='json')
+
 def list_post(request):
     result = serializers.serialize('json', Post.objects.all())
     return HttpResponse(result, content_type='json')
@@ -74,15 +79,18 @@ def comment(request, comment_id):
     result = serializers.serialize('json', Comment.objects.filter(id=comment_id))
     return HttpResponse(result, content_type='json')
 
-def authenticator(request, user_id, authenticator):
+def authenticator(request, user_id):
     #creating new one
+    u_id = user_id
     if request.method == "POST":
-        user_id = user_id
         authenticator1 = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
         date_created = datetime.datetime.now()
-        result = serializers.serialize('json', Authenticator.objects.filter(authenticator=authenticator1))
+        auth = Authenticator.objects.create(user_id_id=u_id, authenticator=authenticator1, date_created=date_created)
+        auth.save()
+        result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
         return HttpResponse(result, content_type='json')
     #getting existing one
-    result = serializers.serialize('json', Authenticator.objects.filter(authenticator=authenticator))
+    authenticator1 = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
+    result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
     return HttpResponse(result, content_type='json')
 

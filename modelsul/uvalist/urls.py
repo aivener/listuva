@@ -28,6 +28,8 @@ urlpatterns = [
 
     url(r'^api/v1/student$', views.list_student, name="list_student"),
     url(r'^api/v1/student/(?P<student_id>\d+)$', views.student, name="student"),
+    url(r'^api/v1/student/(?P<name>\w+)$', views.studentByUsername, name="studentByUsername"),
+
 
     url(r'^api/v1/post$', views.list_post, name="list_post"),
     url(r'^api/v1/post/(?P<post_id>\d+)$', views.post, name="post"),
@@ -35,6 +37,7 @@ urlpatterns = [
     url(r'^api/v1/comment$', views.list_comment, name="list_comment"),
     url(r'^api/v1/comment/(?P<comment_id>\d+)$', views.comment, name="comment"),
 
+    url(r'^api/v1/authenticator/$', views.authenticator, name="authenticator"),
     url(r'^api/v1/authenticator/(?P<user_id>\d+)$', views.authenticator, name="authenticator"),
 
 ]
