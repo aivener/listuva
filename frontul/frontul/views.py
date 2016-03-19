@@ -50,12 +50,15 @@ def login(request):
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password})
+	
+	#*****I have this here to check what the response is, but comment it out to get it to redirect to the home page
 	return HttpResponse(resp)
-	if not resp:
-		# couldn't log them in, send them back to login page with error
+	if not resp: #no student with that username/password, send back to login page with error
 		return render(request, 'login.html')
+	#get user_id of that student username
+	user_id = requests.get('http://expul:8000/api/v1/student/' + username)
 	# logged them in. set their login cookie and redirect to back to wherever they came from
-	#authenticator = resp['authenticator']
+	authenticator = resp['pk']
 	response = HttpResponseRedirect(next)
 	# response.set_cookie("auth", authenticator)
 	return response

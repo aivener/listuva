@@ -101,10 +101,8 @@ def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", v
 
 
 def login_exp_api(request): #takes in data from frontul login method to authenticate
-	#input_username = request.POST.get('username', 'default')
-	#input_password = request.POST.get('password', 'default')
-	input_username = "student1"
-	input_password = "123"
+	input_username = request.POST.get('username', 'default')
+	input_password = request.POST.get('password', 'default')
 	#return JsonResponse({"username": input_username}, content_type='application/json')
 	#get all students
 	student_with_username = requests.get('http://modelsul:8000/api/v1/student/' + input_username)
@@ -117,13 +115,16 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 			real_pword = curr_student['fields']['password']
 			if str.strip(real_pword) == str.strip(input_password):
 				#successful match
-				new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/' + str(curr_student['pk']))
+				new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/' + str(curr_student['pk'])).json()
+
+				#*****ERROR HERE: this is giving a JSONDecodeError when a valid username/password is given
+				#valid username/password from the fixtures file is student1, 123
 				return JsonResponse(new_auth, content_type="application/json", safe=False)
 			else:
-				return JsonResponse({"hi": "unsuccesful"}, content_type="application/json")
-		return JsonResponse({"bye": "unsuccesful"}, content_type="application/json")
+				return JsonResponse({}, content_type="application/json")
+		return JsonResponse({}, content_type="application/json")
 	else:
-		return JsonResponse({"i": "I"}, content_type="application/json")
+		return JsonResponse({}, content_type="application/json")
 
 
 
