@@ -79,14 +79,16 @@ def comment(request, comment_id):
     result = serializers.serialize('json', Comment.objects.filter(id=comment_id))
     return HttpResponse(result, content_type='json')
 
-def authenticator(request, user_id):
+def authenticator(request):
     #creating new one
-    u_id = user_id
+    #u_id = user_id
     if request.method == "POST":
+        u_id = request.POST.get('pk')
         #check if there already is an authenticator object for the user, if there is return that
         if(Authenticator.objects.filter(user_id_id=u_id).exists()):
             result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
-            return result
+            return HttpResponse(result)
+            
         #if no authenticator object for this user, create a new one and return it
         authenticator1 = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
         date_created = datetime.datetime.now()
