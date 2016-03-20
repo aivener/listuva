@@ -85,7 +85,7 @@ def getSubcatName(request, subcatID):
 def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", value= the name
 	all_cats = requests.get('http://modelsul:8000/api/v1/category')
 	all_subcats = requests.get('http://modelsul:8000/api/v1/subcategory')
-	new_info = {} 
+	new_info = {}
 	deser_cats = json.loads(all_cats.text)
 	deser_subcats = json.loads(all_subcats.text)
 	for subcat in deser_subcats:
@@ -119,27 +119,10 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 				#return HttpResponse(new_auth)
 				return JsonResponse(new_auth.json(), content_type="application/json", safe=False)
 			else:
+				# return JsonResponse({"log":"We hit an error2"}, content_type="application/json")
 				return JsonResponse({}, content_type="application/json")
-		return JsonResponse({}, content_type="application/json")
+		# return JsonResponse({"log":"We hit an error1", "student": deser_student, "studentname": input_username} , content_type="application/json")
+		return JsonResponse({} , content_type="application/json")
 	else:
+		# return JsonResponse({"log":"We hit an error"}, content_type="application/json")
 		return JsonResponse({}, content_type="application/json")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

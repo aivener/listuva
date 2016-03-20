@@ -10,7 +10,7 @@ from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
 
 from django.core.urlresolvers import reverse
-from .forms import * 
+from .forms import *
 
 
 def displayCells(request):
@@ -50,13 +50,13 @@ def login(request):
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password}).json()
-	#return HttpResponse(resp[0]['pk'])
 	if not resp or not resp[0]['pk']: #no student with that username/password, send back to login page with error
-		return render(request, 'login.html')
-	
+		return HttpResponseRedirect(reverse('login'))
+		#return render(request, 'login.html')
+
 	#get user_id of that student username
 	user_id = requests.get('http://expul:8000/api/v1/student/' + username)
-	
+
 	# logged them in. set their login cookie and redirect to back to wherever they came from
 	authenticator = resp[0]['pk']
 	response = HttpResponseRedirect(next)
