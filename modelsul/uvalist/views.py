@@ -61,12 +61,27 @@ def studentByUsername(request, name):
     return HttpResponse(result, content_type='json')
 
 def list_post(request):
+    if request.method == "POST":
+        student = request.POST.get('student', 'name didnt work')
+        title = request.POST.get('title', 'title didnt work')
+        summary = request.POST.get('summary', 'summary didnt work')
+        dateTimePosted = datetime.datetime.now()
+        price = request.POST.get('price', 'password didnt work')
+        active = True
+        category = request.POST.get('category', 'category didnt work')
+        subcategory = request.POST.get('subcategory', 'subcategory didnt work')
+        post = Post.objects.create(student_id=student, title=title, summary=summary, dateTimePosted=dateTimePosted, price=price, active=active, category_id=category, subcategory_id=subcategory)
+        post.save()
+        curr_id = post.id
+        result = serializers.serialize('json', Post.objects.filter(id=curr_id))
+        return HttpResponse(result, content_type='json')
     result = serializers.serialize('json', Post.objects.all())
     return HttpResponse(result, content_type='json')
 
 def post(request, post_id):
     result = serializers.serialize('json', Post.objects.filter(id=post_id))
-    return HttpResponse(result, content_type='json')
+    #return HttpResponse(result, content_type='json')
+    return HttpResponse("hi")
 
 def list_comment(request):
     result = serializers.serialize('json', Comment.objects.all())

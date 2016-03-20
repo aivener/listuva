@@ -103,14 +103,13 @@ def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", v
 def login_exp_api(request): #takes in data from frontul login method to authenticate
 	input_username = request.POST.get('username', 'default')
 	input_password = request.POST.get('password', 'default')
-	#return JsonResponse({"username": input_username}, content_type='application/json')
 	#get all students
 	student_with_username = requests.get('http://modelsul:8000/api/v1/student/' + input_username)
 	deser_student = json.loads(student_with_username.text) #TODO: add this url
 	#check if that returned a student
 	if student_with_username:
-	# 	#get hashed password of that username
-	# 	#check if equal to password passed into the method
+		#get hashed password of that username
+		#check if equal to password passed into the method
 		for curr_student in deser_student:
 			real_pword = curr_student['fields']['password']
 			if str.strip(real_pword) == str.strip(input_password):
@@ -118,8 +117,6 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 				#new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/' + str(curr_student['pk']))
 				new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/', data={"pk": curr_student['pk']})
 				#return HttpResponse(new_auth)
-				
-				#valid username/password from the fixtures file is student1, 123
 				return JsonResponse(new_auth.json(), content_type="application/json", safe=False)
 			else:
 				return JsonResponse({}, content_type="application/json")
