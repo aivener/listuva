@@ -60,7 +60,7 @@ def login(request):
 	# logged them in. set their login cookie and redirect to back to wherever they came from
 	authenticator = resp[0]['pk']
 	response = HttpResponseRedirect(next)
-	# response.set_cookie("auth", authenticator)
+	response.set_cookie("auth", authenticator)
 	return response
 
 

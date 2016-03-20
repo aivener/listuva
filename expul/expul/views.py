@@ -119,7 +119,6 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 				new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/', data={"pk": curr_student['pk']})
 				#return HttpResponse(new_auth)
 				
-				#*****ERROR HERE: this is giving a JSONDecodeError when a valid username/password is given
 				#valid username/password from the fixtures file is student1, 123
 				return JsonResponse(new_auth.json(), content_type="application/json", safe=False)
 			else:
@@ -127,8 +126,6 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 		return JsonResponse({}, content_type="application/json")
 	else:
 		return JsonResponse({}, content_type="application/json")
-
-
 
 
 

@@ -88,7 +88,7 @@ def authenticator(request):
         if(Authenticator.objects.filter(user_id_id=u_id).exists()):
             result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
             return HttpResponse(result)
-            
+
         #if no authenticator object for this user, create a new one and return it
         authenticator1 = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
         date_created = datetime.datetime.now()
@@ -96,6 +96,7 @@ def authenticator(request):
         auth.save()
         result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
         return HttpResponse(result, content_type='json')
+    
     #getting existing one
     authenticator1 = hmac.new (key = settings.SECRET_KEY.encode('utf-8'), msg = os.urandom(32), digestmod = 'sha256').hexdigest()
     result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
