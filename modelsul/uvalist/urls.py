@@ -21,12 +21,19 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
 
     url(r'^api/v1/category$', views.list_category, name="list_category"),
+    url(r'^api/v1/create_category$', views.create_category, name="create_category"),
     url(r'^api/v1/category/(?P<category_id>\d+)$', views.category, name="category"),
 
     url(r'^api/v1/subcategory$', views.list_subcategory, name="list_subcategory"),
     url(r'^api/v1/subcategory/(?P<subcategory_id>\d+)$', views.subcategory, name="subcategory"),
 
     url(r'^api/v1/student$', views.list_student, name="list_student"),
+    url(r'^api/v1/create_student$', views.create_category, name="create_category"),
+    url(r'^api/v1/get_student/(?P<student_id>\d+)$', views.get_student, name="get_student"),
+
+
+
+    url(r'^api/v1/get_category/(?P<cat_id>\d+)$', views.get_category, name="get_category"),
     url(r'^api/v1/student/(?P<student_id>\d+)$', views.student, name="student"),
     url(r'^api/v1/student/(?P<name>\w+)$', views.studentByUsername, name="studentByUsername"),
 

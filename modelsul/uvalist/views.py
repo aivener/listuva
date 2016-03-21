@@ -100,13 +100,13 @@ def create_student(request):
 
     return _success_response(request, {'user_id': s.pk})
 
-def get_student(request, user_id):
+def get_student(request, student_id):
     if request.method != 'GET':
         return _error_response(request, "must make GET request")
 
     try:
-        s = models.Student.objects.get(pk=user_id)
-    except models.Student.DoesNotExist:
+        s = Student.objects.get(pk=student_id)
+    except Student.DoesNotExist:
         return _error_response(request, "user not found")
 
     return _success_response(request, {'name': s.username,
@@ -116,6 +116,7 @@ def get_student(request, user_id):
                                        'email': s.email
                                        })
 
+#need to remove this method
 def student(request, student_id):
     if request.method == "POST":
         name = request.POST.get('name', 'name didnt work')
@@ -135,9 +136,9 @@ def create_category(request):
     if request.method != 'POST':
         return _error_response(request, "must make POST request")
     if 'title' not in request.POST:
-        return _error_response(request, "missing required fields")
+        return _error_response(request, request.POST)
 
-    s = models.Category(name = request.POST['title'])
+    s = Category(title = request.POST['title'])
 
     try:
         s.save()
@@ -151,8 +152,8 @@ def get_category(request, cat_id):
         return _error_response(request, "must make GET request")
 
     try:
-        s = models.Category.objects.get(pk=cat_id)
-    except models.Category.DoesNotExist:
+        s = Category.objects.get(pk=cat_id)
+    except Category.DoesNotExist:
         return _error_response(request, "category not found")
 
     return _success_response(request, {'title': s.title })
@@ -164,7 +165,7 @@ def create_sucategory(request):
     if 'title' not in request.POST or 'category' not in request.POST:
         return _error_response(request, "missing required fields")
 
-    s = models.Subcategory(name = request.POST['title'], category = request.POST['category'])
+    s = Subcategory(title = request.POST['title'], category = request.POST['category'])
 
     try:
         s.save()
@@ -178,12 +179,14 @@ def get_sub_category(request, subcat_id):
         return _error_response(request, "must make GET request")
 
     try:
-        s = models.Subcategory.objects.get(pk=subcat_id)
+        s = Subcategory.objects.get(pk=subcat_id)
     except models.Category.DoesNotExist:
         return _error_response(request, "category not found")
 
     return _success_response(request, {'title': s.title, 'category': s.category })
 
+
+#need to remove this method
 def category(request, category_id):
     if request.method == "POST":
         title = request.POST.get('title', 'title did not work')
