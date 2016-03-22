@@ -44,6 +44,29 @@ def post(request, post_id):
     result = serializers.serialize('json', Post.objects.filter(id=post_id))
     return HttpResponse(result, content_type='json')
 
+
+def create_post(request):
+    if request.method != 'POST':
+        return _error_response(request, "must make POST request")
+    if 'title' not in request.POST:
+        return _error_response(request, request.POST)
+    student = Student(pk=request.POST['user_id'])
+    category = Category(pk=request.POST['category'])
+    subcategory = Subcategory(pk=request.POST['subcategory'])
+
+    p = Post(student = student,
+        title = request.POST['title'],
+        summary = request.POST['summary'],
+        dateTimePosted = datetime.datetime.now(),
+        price = request.POST['price'],
+        active = True,
+        category = category,
+        subcategory =subcategory)
+    p.save()
+    result = serializers.serialize('json', Post.objects.filter(title=request.POST['title']))
+
+    return HttpResponse(result, content_type='json')
+
 def list_comment(request):
     result = serializers.serialize('json', Comment.objects.all())
     return HttpResponse(result, content_type='json')
@@ -80,6 +103,16 @@ def authenticator(request):
     result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
     return HttpResponse(result, content_type='json')
 
+def get_user_by_authenticator(request, authenticator):
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        u = Authenticator.objects.get(authenticator=authenticator)
+    except Authenticator.DoesNotExist:
+        return _error_response(request, "authenticator not found")
+
+    return JsonResponse({}, content_type="application/json")
 
 def create_student(request):
     if request.method != 'POST':

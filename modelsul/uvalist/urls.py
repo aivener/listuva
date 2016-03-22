@@ -40,11 +40,14 @@ urlpatterns = [
 
     url(r'^api/v1/post$', views.list_post, name="list_post"),
     url(r'^api/v1/post/(?P<post_id>\d+)$', views.post, name="post"),
+    url(r'^api/v1/create_post/$', views.create_post, name="create_post"),
 
     url(r'^api/v1/comment$', views.list_comment, name="list_comment"),
     url(r'^api/v1/comment/(?P<comment_id>\d+)$', views.comment, name="comment"),
 
     url(r'^api/v1/authenticator/$', views.authenticator, name="authenticator"),
     url(r'^api/v1/authenticator/(?P<user_id>\d+)$', views.authenticator, name="authenticator"),
+    url(r'^api/v1/get_user_by_authenticator/(?P<authenticator>\d+)$', views.get_user_by_authenticator, name="get_user_by_authenticator"),
+
 
 ]

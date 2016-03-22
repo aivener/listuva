@@ -83,19 +83,50 @@ def signup(request):
 	return response
 
 
-# def create_post(request):
-# 	auth = request.COOKIES.get('auth')
-# 	if not auth:
-# 		# handle user not logged in while trying to create a post
-# 		return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_listing")
-# 	if request.method == 'GET':
-# 		return render("create_post.html", ...)
-# 	f = create_listing_form(request.POST)
+def create_post(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		# handle user not logged in while trying to create a post
+		return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_post"))
+	if request.method == 'GET':
+		all_cat = requests.get('http://expul:8000/api/v1/getallcatname/')
+		post_form = CreatePostForm(initial={'cat_choices': json})
+		return render(request, "create_post.html", {'form': post_form})
+	f = CreatePostForm(request.POST)
+	if not f.is_valid():
+		# bogus form post, send them back to login page and show them an error
+		return HttpResponseRedirect('/blah/')
+	title = f.cleaned_data['title']
+	category = f.cleaned_data['category']
+	subcategory = f.cleaned_data['subcategory']
+	summary = f.cleaned_data['summary']
+	price = f.cleaned_data['price']
+	next = reverse('displayCells')
+	resp = requests.post('http://expul:8000/api/v1/create_listing_exp_api/', data={"title":title, "category":category, "subcategory":subcategory, "summary":summary, "price":price, "auth":auth}).json()
+	response = HttpResponseRedirect(next)
+	return response
+
 #     ...
-# 	resp = create_listing_exp_api(auth, ...)
+	#resp = create_listing_exp_api(auth, ...)
 # 	if resp and not resp['ok']:
 # 		if resp['error'] == exp_srvc_errors.E_UNKNOWN_AUTH:
 # 			# exp service reports invalid authenticator -- treat like user not logged in
 # 			return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_post")
 # 	...
 # 	return render("create_post_success.html", ...)
+
+
+#delete auth cookie and delete auth from database
+def logout(request):
+	return True
+
+
+
+
+
+
+
+
+
+
+

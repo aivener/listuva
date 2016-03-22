@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.core import serializers
 from django.shortcuts import get_object_or_404
+from django.shortcuts import render
+
 import json
 import requests
 
@@ -82,6 +84,16 @@ def getSubcatName(request, subcatID):
 			new_info["subcatName"] = curr_subcat_name
 	return JsonResponse(new_info, content_type='application/json')
 
+def getAllCatName(request):
+	all_cats = requests.get('http://modelsul:8000/api/v1/category')
+	new_info = {}
+	deser_cats = json.loads(all_cats.text)
+	for cat in deser_cats:
+		curr_cat_id = int(cat['pk'])
+		new_info[curr_cat_id] = str(cat['fields']['title'])
+	return JsonResponse(new_info, content_type='application/json')
+
+
 def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", value= the name
 	all_cats = requests.get('http://modelsul:8000/api/v1/category')
 	all_subcats = requests.get('http://modelsul:8000/api/v1/subcategory')
@@ -143,3 +155,32 @@ def signup_exp_api(request):
 																		"gender": gender,
 																		"email":username})
 	return JsonResponse(student.json(), content_type="application/json", safe=False)
+
+#makes assumption that the values for foreign keys are integers
+def create_listing_exp_api(request):
+	user_id = 1
+	title = request.POST.get('title', 'default')
+	category = request.POST.get('category', 'default')
+	subcategory = request.POST.get('subcategory', 'default')
+	summary = request.POST.get('summary', 'default')
+	price = request.POST.get('price', 'default')
+	auth = request.POST.get('auth', 'default')
+
+	post = requests.post('http://modelsul:8000/api/v1/create_post/', data={"user_id": user_id,
+																		"title": title,
+																		"category": category,
+																		"subcategory": subcategory,
+																		"summary": summary,
+																		"price":price})
+	return JsonResponse(post, content_type="application/json", safe=False)
+
+
+
+
+
+
+
+
+
+
+
