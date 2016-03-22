@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^api/v1/subcategory/(?P<subcategory_id>\d+)$', views.subcategory, name="subcategory"),
 
     url(r'^api/v1/student$', views.list_student, name="list_student"),
-    url(r'^api/v1/create_student$', views.create_category, name="create_category"),
+    url(r'^api/v1/create_student/$', views.create_student, name="create_student"),
     url(r'^api/v1/get_student/(?P<student_id>\d+)$', views.get_student, name="get_student"),
 
 

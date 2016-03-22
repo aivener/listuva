@@ -126,3 +126,20 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 	else:
 		# return JsonResponse({"log":"We hit an error"}, content_type="application/json")
 		return JsonResponse({}, content_type="application/json")
+
+
+
+
+def signup_exp_api(request):
+	username = request.POST.get('username', 'default')
+	password = request.POST.get('password', 'default')
+	name = request.POST.get('name', 'default')
+	year = request.POST.get('year', 'default')
+	gender = request.POST.get('gender', 'default')
+
+	student = requests.post('http://modelsul:8000/api/v1/create_student/', data={"name": name,
+																		"password": password,
+																		"year": year,
+																		"gender": gender,
+																		"email":username})
+	return JsonResponse(student.json(), content_type="application/json", safe=False)

@@ -45,3 +45,8 @@ class Authenticator(models.Model):
 	user_id	 = models.ForeignKey(Student)
 	authenticator = models.CharField(max_length=254, primary_key=True)
 	date_created = models.DateTimeField()
+	def __str__(self):
+		return self.user_id.name
+
+
+		

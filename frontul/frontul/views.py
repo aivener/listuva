@@ -63,6 +63,25 @@ def login(request):
 	response.set_cookie("auth", authenticator)
 	return response
 
+def signup(request):
+	if request.method == 'GET':
+		s_form = SignUpForm()
+		next = request.GET.get('signup') or reverse('displayCells')
+		return render(request, 'signup.html', {'form': s_form})
+	f = SignUpForm(request.POST)
+	if not f.is_valid():
+		# bogus form post, send them back to login page and show them an error
+		return HttpResponseRedirect('/blah/')
+	username = f.cleaned_data['username']
+	password = f.cleaned_data['password']
+	name = f.cleaned_data['name']
+	year = f.cleaned_data['year']
+	gender = f.cleaned_data['gender']
+	next = reverse('login')
+	resp = requests.post('http://expul:8000/api/v1/signup_exp_api/', data={"username":username,"password":password,"name":name,"year":year, "gender":gender}).json()
+	response = HttpResponseRedirect(next)
+	return response
+
 
 # def create_post(request):
 # 	auth = request.COOKIES.get('auth')

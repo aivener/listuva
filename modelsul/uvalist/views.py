@@ -87,18 +87,18 @@ def create_student(request):
     if 'name' not in request.POST or 'gender' not in request.POST or 'year' not in request.POST or 'password' not in request.POST or 'email' not in request.POST:
         return _error_response(request, "missing required fields")
 
-    s = models.Student(name = request.POST['name'],
-                       gender = request.POST['gender'],
-                       year = request.POST['year'],
-                       password=hashers.make_password(request.POST['password']),
-                       )
+    s = Student(name = request.POST['name'],
+                gender = request.POST['gender'],
+                year = request.POST['year'],
+                password=hashers.make_password(request.POST['password']),
+                )
 
-    try:
-        s.save()
-    except db.Error:
-        return _error_response(request, "db error")
+    s.save()
+    result = serializers.serialize('json', Student.objects.filter(name=request.POST['name']))
 
-    return _success_response(request, {'user_id': s.pk})
+    return HttpResponse(result, content_type='json')
+
+    # return _success_response(request, {'user_id': s.pk})
 
 def get_student(request, student_id):
     if request.method != 'GET':
