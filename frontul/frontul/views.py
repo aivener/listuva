@@ -16,12 +16,20 @@ from django.contrib.auth import hashers
 
 
 def displayCells(request):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		# handle user not logged in while trying to create a post
+		return HttpResponseRedirect(reverse("login"))
 	cats_subcats = requests.get('http://expul:8000/api/v1/maketable')
 	deser = json.loads(cats_subcats.text)
 	return render(request, 'home.html', {'cells_dict':deser})
 	#return JsonResponse(cells_dict, content_type='json', safe=False)
 
 def displayCatPosts(request,catID):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		# handle user not logged in while trying to create a post
+		return HttpResponseRedirect(reverse("login"))
 	c = requests.get('http://expul:8000/api/v1/postbycat/' + catID)
 	deser = json.loads(c.text)
 	x = requests.get('http://expul:8000/api/v1/getcatname/' + catID)
@@ -29,6 +37,10 @@ def displayCatPosts(request,catID):
 	return render(request, 'catposts.html', {'cells_dict':deser, 'catName': deser1})
 
 def displaySubCatPosts(request,subCatID):
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		# handle user not logged in while trying to create a post
+		return HttpResponseRedirect(reverse("login"))
 	c = requests.get('http://expul:8000/api/v1/postbysubcat/' + subCatID)
 	deser = json.loads(c.text)
 	x = requests.get('http://expul:8000/api/v1/getsubcatname/' + subCatID)
