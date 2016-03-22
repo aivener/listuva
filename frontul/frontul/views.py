@@ -48,25 +48,20 @@ def login(request):
 		# bogus form post, send them back to login page and show them an error
 		return render('login.html', "")
 	username = f.cleaned_data['username']
-	password = hashers.make_password(f.cleaned_data['password']) #hashes password that was typed into form - this works
+	password = hashers.make_password(f.cleaned_data['password'], salt="bar") #hashes password that was typed into form - this works
 	#return HttpResponse(password)
 	
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 	
 	#send typed username and hashed password to exp level
-	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password})
-	return HttpResponse(resp)
-	if not resp: #no student with that username/password, send back to login page with error
+	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password}).json()
+	#return JsonResponse(resp.json(), safe=False)
+	if not resp or not resp[0]['pk']: #no student with that username/password, send back to login page with error
 		return HttpResponseRedirect(reverse('login'))
-		#return render(request, 'login.html')
-
-	#get user_id of that student username
-	#user_id = requests.get('http://expul:8000/api/v1/student/' + username)
 
 	# logged them in. set their login cookie and redirect to back to wherever they came from
 	authenticator = resp[0]['pk']
-	return HttpResponse(authenticator)
 	response = HttpResponseRedirect(next)
 	response.set_cookie("auth", authenticator)
 	return response
