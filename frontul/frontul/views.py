@@ -132,8 +132,10 @@ def create_post(request):
 
 
 #delete auth cookie and delete auth from database
-def logout(request):
-	return True
+def logoutUser(request):
+	response = HttpResponseRedirect(reverse('displayCells'))
+	response.delete_cookie("auth")
+	return response
 
 
 
