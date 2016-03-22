@@ -105,7 +105,8 @@ def create_post(request):
 		return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_post"))
 	if request.method == 'GET':
 		all_cat = requests.get('http://expul:8000/api/v1/getallcatname/')
-		post_form = CreatePostForm(initial={'cat_choices': json})
+
+		post_form = CreatePostForm()
 		return render(request, "create_post.html", {'form': post_form})
 	f = CreatePostForm(request.POST)
 	if not f.is_valid():

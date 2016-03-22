@@ -115,6 +115,7 @@ def get_user_by_authenticator(request, authenticator):
     return JsonResponse({}, content_type="application/json")
 
 def create_student(request):
+    #should add try catch statements
     if request.method != 'POST':
         return _error_response(request, "must make POST request")
     if 'name' not in request.POST or 'gender' not in request.POST or 'year' not in request.POST or 'password' not in request.POST or 'email' not in request.POST:
