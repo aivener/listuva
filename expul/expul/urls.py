@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^api/v1/getsubcatname/(?P<subcatID>\d+)$', views.getSubcatName, name="getSubcatName"),
     url(r'^api/v1/catname/(?P<subcatID>\d+)$', views.getCatNameFromSubcat, name="getCatNameFromSubcat"),
     url(r'^api/v1/getallcatname/$', views.getAllCatName, name="getAllCatName"),
+    url(r'^api/v1/getallsubcatname/$', views.getAllSubCatName, name="getAllSubCatName"),
     # url(r'^api/v1/login_exp_api/username=(?P<username>\d+)$&password=(?P<password>\d+)$', views.login_exp_api, name="login_exp_api"),
     url(r'^api/v1/login_exp_api/$', views.login_exp_api, name="login_exp_api"),
     url(r'^api/v1/signup_exp_api/$', views.signup_exp_api, name="signup_exp_api"),

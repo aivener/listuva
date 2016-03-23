@@ -1,5 +1,126 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+/* this is the bit that gives the border color */
+div.list-category h3.title
+{
+display: block;
+padding: 14px 0 15px 0;
+font-size: 20px;
+font-weight: 100;
+margin-bottom: 0px;
+border-bottom: 1px solid;
+}
+
+div.list-category span.list-footer
+{
+display: block;
+padding: 14px 0 15px 0;
+font-size: 20px;
+font-weight: 100;
+margin-bottom: 0px;
+border-bottom: 1px solid;
+}
+
+/* removes the border at the top of the list so it doesnt cover up the border above */
+div.list-category a.list-group-item:first-child
+{
+border-top: 0;
+}
+
+div.list-category .list-footer
+{
+margin-top:-15px;
+}
+
+div.list-category a.list-group-item
+{
+border-left: 0;
+border-right: 0;
+border-radius: 0;
+border-bottom: 1px solid #E0E4E9;
+color: #4c4c4c;
+text-decoration: none;
+padding-left: 0;
+padding-right: 0;
+overflow: hidden;
+}
+</style>
+<head>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+        console.log( "document loaded" );
+        
+        //theDict = "{{choices}}"; //get the dictionary
+		var js_dict = {
+	       {% for k, v in choices %}
+	       	"{{ k }}": {
+	       		{% for k1,v1 in v %}
+	       			"{{ k1 }}": "{{ v1 }}"{% if not forloop.last %},{% endif %}
+	       		{% endfor %}		
+	   		}{% if not forloop.last %},{% endif %}
+	       {% endfor %}
+	   }
+        // key = $(this).value();
+
+       
+
+		$( "#category" ).on('change', function() {
+			var str = "";
+			str += "<option value='null'>-----</option>"
+			var count = 0;
+			$( "select option:selected" ).each(function() {
+				count++;
+				var chosen_cat = $(this).val();
+				for (var key in js_dict[chosen_cat]) {
+					if(count==1)
+						str += "<option value=" + key + " > " + js_dict[chosen_cat][key]+ "</option>";
+				}
+			 });
+
+			$("#subcategory").empty();
+			$( "#subcategory" ).append( str);
+		});
+
+	});
+ 
+    $( window ).load(function() {
+
+    });
+   //  $( "#category" ).on('change', function() {
+   //  	// var str = "";
+   //  	// $( "select option:selected" ).each(function() {
+   //   //  		str += $( this ).text() + " ";
+   //  	// });
+   //  	// $( "div" ).text( str );
+   //  	alert("{{text}}");
+  	// });
+    </script>
+</head>
+<body>
 <form action="/create_post/" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    Title {{ form.title }} <br><br>
+    Category 
+    <select id="category" name = "category">
+    	<option value="null">-----</option>
+		{% for key, val in cat_choices %}
+
+    	<option value={{key}}>	{{val}} </option>
+    	{%endfor%}
+    </select> <br><br>
+
+    Subcategory
+    <select id = "subcategory" name="subcategory">
+		<option value="null">-----</option> 
+	</select><br><br>
+
+    Summary {{ form.summary }} <br><br>
+    Price {{ form.price }} <br><br>
     <input type="submit" value="Submit" />
 </form>
+</body>
+{% endblock%}

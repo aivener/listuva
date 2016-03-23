@@ -103,11 +103,35 @@ def create_post(request):
 	if not auth:
 		# handle user not logged in while trying to create a post
 		return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_post"))
+	des_catergories = requests.get('http://expul:8000/api/v1/getallcatname/')
+	des_subcatergories = requests.get('http://expul:8000/api/v1/getallsubcatname/')
+	catergories = json.loads(des_catergories.text)
+	subcategories = json.loads(des_subcatergories.text)
+	cat_names = []
+	cat_nums = []
+	for val in catergories:
+		cat_nums.append(val)
+		cat_names.append(catergories[val])
+	cat_choices = zip(cat_nums, cat_names)
+
+	subcat_cats = []
+	subcat_fields = []
+	for val1 in subcategories:
+		pks = []
+		names = []
+		for val2 in subcategories[val1]:
+			pks.append(val2)
+			names.append(subcategories[val1][val2])
+		prim_choices = zip(pks, names)
+		subcat_fields.append(prim_choices)
+		subcat_cats.append(val1)
+	subcat_choices = zip(subcat_cats, subcat_fields)
+
 	if request.method == 'GET':
 		all_cat = requests.get('http://expul:8000/api/v1/getallcatname/')
 
 		post_form = CreatePostForm()
-		return render(request, "create_post.html", {'form': post_form})
+		return render(request, "create_post.html", {'form': post_form, 'choices':subcat_choices, 'text': "hello", 'cat_choices':cat_choices})
 	f = CreatePostForm(request.POST)
 	if not f.is_valid():
 		# bogus form post, send them back to login page and show them an error
@@ -118,7 +142,7 @@ def create_post(request):
 	summary = f.cleaned_data['summary']
 	price = f.cleaned_data['price']
 	next = reverse('displayCells')
-	resp = requests.post('http://expul:8000/api/v1/create_listing_exp_api/', data={"title":title, "category":category, "subcategory":subcategory, "summary":summary, "price":price, "auth":auth}).json()
+	resp = requests.post('http://expul:8000/api/v1/create_listing_exp_api/', data={"title":title, "category":category, "subcategory":subcategory, "summary":summary, "price":price, "auth":auth})
 	response = HttpResponseRedirect(next)
 	return response
 

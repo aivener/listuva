@@ -95,6 +95,22 @@ def getAllCatName(request):
 		new_info[curr_cat_id] = str(cat['fields']['title'])
 	return JsonResponse(new_info, content_type='application/json')
 
+def getAllSubCatName(request):
+	all_cats = requests.get('http://modelsul:8000/api/v1/category')
+	new_info = {}
+	deser_cats = json.loads(all_cats.text)
+	for cat in deser_cats:
+		curr_cat_id = int(cat['pk'])
+		new_info[curr_cat_id] = {}
+
+	all_subcats = requests.get('http://modelsul:8000/api/v1/subcategory')
+	deser_cats = json.loads(all_subcats.text)
+	for subcat in deser_cats:
+		cat_id = subcat["fields"]["category"]
+		subcat_id = subcat["pk"]
+		new_info[cat_id][subcat_id] = subcat["fields"]["title"]
+	# 	new_info[curr_cat_id] = str(cat['fields']['title'])
+	return JsonResponse(new_info, content_type='application/json')
 
 def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", value= the name
 	all_cats = requests.get('http://modelsul:8000/api/v1/category')
@@ -154,12 +170,14 @@ def signup_exp_api(request):
 
 #makes assumption that the values for foreign keys are integers
 def create_listing_exp_api(request):
+	#TODO: Didnt knwo how to access which user is posting
 	user_id = 1
 	title = request.POST.get('title', 'default')
 	category = request.POST.get('category', 'default')
 	subcategory = request.POST.get('subcategory', 'default')
 	summary = request.POST.get('summary', 'default')
 	price = request.POST.get('price', 'default')
+	#Needs to verify that the person is authorized
 	auth = request.POST.get('auth', 'default')
 
 	post = requests.post('http://modelsul:8000/api/v1/create_post/', data={"user_id": user_id,
