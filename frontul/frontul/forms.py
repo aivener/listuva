@@ -14,11 +14,11 @@ choices = zip(nums, names)
 
 class LoginForm(forms.Form):
 	username = forms.CharField(required=True)
-	password = forms.CharField(required=True)
+	password = forms.CharField(required=True, widget=forms.PasswordInput)
 
 class SignUpForm(forms.Form):
 	username = forms.CharField(required=False)
-	password = forms.CharField(required=True)
+	password = forms.CharField(required=True, widget=forms.PasswordInput)
 	name = forms.CharField(required=True)
 	year = forms.IntegerField(required=True)
 	gender = forms.BooleanField(required=True)
