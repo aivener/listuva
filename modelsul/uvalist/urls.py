@@ -33,9 +33,10 @@ urlpatterns = [
 
 
 
+
     url(r'^api/v1/get_category/(?P<cat_id>\d+)$', views.get_category, name="get_category"),
     url(r'^api/v1/student/(?P<student_id>\d+)$', views.student, name="student"),
-    url(r'^api/v1/student/(?P<name>\w+)$', views.studentByUsername, name="studentByUsername"),
+    url(r'^api/v1/student/(?P<name>\w+)$', views.getStudentByUsername, name="getStudentByUsername"),
 
 
     url(r'^api/v1/post$', views.list_post, name="list_post"),

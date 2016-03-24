@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
 import hmac
 import os
+from django.core import serializers
 from django.conf import settings
 import datetime
 from django.utils.timezone import utc
@@ -17,32 +18,76 @@ def index(request):
 
 #List Methods
 def list_category(request):
-    result = serializers.serialize('json', Category.objects.all())
-    return HttpResponse(result, content_type='json')
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        result = serializers.serialize('json', Category.objects.all())
+        return HttpResponse(result, content_type='json')
+    except Category.DoesNotExist:
+        return _error_response(request, "category not found")
 
 def list_subcategory(request):
-    result = serializers.serialize('json', Subcategory.objects.all())
-    return HttpResponse(result, content_type='json')
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        result = serializers.serialize('json', Subcategory.objects.all())
+        return HttpResponse(result, content_type='json')
+    except Subcategory.DoesNotExist:
+        return _error_response(request, "subcategory not found")
 
 def subcategory(request, subcategory_id):
-    result = serializers.serialize('json', Subcategory.objects.filter(id=subcategory_id))
-    return HttpResponse(result, content_type='json')
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        result = serializers.serialize('json', Subcategory.objects.filter(id=subcategory_id))
+        return HttpResponse(result, content_type='json')
+    except Subcategory.DoesNotExist:
+        return _error_response(request, "subcategory not found")
 
 def list_student(request):
-    result = serializers.serialize('json', Student.objects.all())
-    return HttpResponse(result, content_type='json')
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
 
-def studentByUsername(request, name):
-    result = serializers.serialize('json', Student.objects.filter(name=name))
-    return HttpResponse(result, content_type='json')
+    try:
+        result = serializers.serialize('json', Student.objects.all())
+        return HttpResponse(result, content_type='json')
+    except Student.DoesNotExist:
+        return _error_response(request, "students not found")
+
+def getStudentByUsername(request, name):
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        s = Student.objects.filter(name=name)
+        result = serializers.serialize('json', Student.objects.filter(name=name))
+        return HttpResponse(result, content_type='json')
+
+    except Student.DoesNotExist:
+        return _error_response(request, "students not found")
 
 def list_post(request):
-    result = serializers.serialize('json', Post.objects.all())
-    return HttpResponse(result, content_type='json')
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        result = serializers.serialize('json', Post.objects.all())
+        return HttpResponse(result, content_type='json')
+    except Post.DoesNotExist:
+        return _error_response(request, "post not found")
 
 def post(request, post_id):
-    result = serializers.serialize('json', Post.objects.filter(id=post_id))
-    return HttpResponse(result, content_type='json')
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        result = serializers.serialize('json', Post.objects.filter(id=post_id))
+        return HttpResponse(result, content_type='json')
+    except Post.DoesNotExist:
+        return _error_response(request, "post not found")
 
 
 def create_post(request):
@@ -127,12 +172,14 @@ def create_student(request):
                 password=hashers.make_password(str.strip(request.POST['password']), salt="bar"),
                 )
 
-    s.save()
-    result = serializers.serialize('json', Student.objects.filter(name=request.POST['name']))
+    try:
+        s.save()
+        result = serializers.serialize('json', Student.objects.filter(name=request.POST['name']))
+        return HttpResponse(result, content_type='json')
 
-    return HttpResponse(result, content_type='json')
+    except db.Error:
+        return _success_response(request, {'user_id': s.pk})
 
-    # return _success_response(request, {'user_id': s.pk})
 
 def get_student(request, student_id):
     if request.method != 'GET':

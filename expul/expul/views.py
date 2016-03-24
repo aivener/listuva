@@ -187,14 +187,3 @@ def create_listing_exp_api(request):
 																		"summary": summary,
 																		"price":price})
 	return JsonResponse(post, content_type="application/json", safe=False)
-
-
-
-
-
-
-
-
-
-
-
