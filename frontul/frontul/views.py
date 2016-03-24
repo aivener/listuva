@@ -64,10 +64,10 @@ def login(request):
 	username = f.cleaned_data['username']
 	password = hashers.make_password(f.cleaned_data['password'], salt="bar") #hashes password that was typed into form - this works
 	#return HttpResponse(password)
-	
+
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
-	
+
 	#send typed username and hashed password to exp level
 	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password}).json()
 	#return JsonResponse(resp.json(), safe=False)
@@ -140,7 +140,7 @@ def create_post(request):
 
 	if not f.is_valid():
 		# bogus form post, send them back to login page and show them an error
-		messages.error(request, 'You must fill out all fields!')
+		messages.error(request, 'Error: Please fill out all fields appropriately!')
 		return HttpResponseRedirect('/create_post/')
 	if f.cleaned_data['category'] == "null" or f.cleaned_data['subcategory'] == "null":
 		messages.error(request, 'You must fill out all fields!')
@@ -172,14 +172,3 @@ def logoutUser(request):
 	response = HttpResponseRedirect(reverse('displayCells'))
 	response.delete_cookie("auth")
 	return response
-
-
-
-
-
-
-
-
-
-
-
