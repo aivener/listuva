@@ -1,8 +1,18 @@
-Login Here 
+{% extends "base.html" %}
+
+{% block content %}
+
 
 <form action="/login/" method="post">
     {% csrf_token %}
+    {% if messages %}
+    	{% for message in messages %}
+    		<div>{{message}}</div>
+    	{% endfor %}
+    {% endif %}
     {{ form }}
     <input type="submit" value="Submit" />
 </form>
-<a href="/signup/">Sign Up Here</a>
+<a href="/signup/">Sign Up</a>
+
+{% endblock %}

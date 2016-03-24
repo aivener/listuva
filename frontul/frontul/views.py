@@ -12,6 +12,7 @@ from django.shortcuts import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from .forms import *
 from django.contrib.auth import hashers
+from django.contrib import messages
 
 
 
@@ -58,7 +59,8 @@ def login(request):
 	f = LoginForm(request.POST)
 	if not f.is_valid():
 		# bogus form post, send them back to login page and show them an error
-		return render('login.html', "")
+		messages.error(request, 'You must fill out all fields')
+		return HttpResponseRedirect('/login/')
 	username = f.cleaned_data['username']
 	password = hashers.make_password(f.cleaned_data['password'], salt="bar") #hashes password that was typed into form - this works
 	#return HttpResponse(password)
@@ -70,6 +72,7 @@ def login(request):
 	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password}).json()
 	#return JsonResponse(resp.json(), safe=False)
 	if not resp or not resp[0]['pk']: #no student with that username/password, send back to login page with error
+		messages.error(request, 'Invalid username and/or password.')
 		return HttpResponseRedirect(reverse('login'))
 
 	# logged them in. set their login cookie and redirect to back to wherever they came from
@@ -86,7 +89,8 @@ def signup(request):
 	f = SignUpForm(request.POST)
 	if not f.is_valid():
 		# bogus form post, send them back to login page and show them an error
-		return HttpResponseRedirect('/blah/')
+		messages.error(request, 'You must fill out all fields!')
+		return HttpResponseRedirect('/signup/')
 	username = f.cleaned_data['username']
 	password = f.cleaned_data['password']
 	name = f.cleaned_data['name']
@@ -133,15 +137,22 @@ def create_post(request):
 		post_form = CreatePostForm()
 		return render(request, "create_post.html", {'form': post_form, 'choices':subcat_choices, 'text': "hello", 'cat_choices':cat_choices})
 	f = CreatePostForm(request.POST)
+
 	if not f.is_valid():
 		# bogus form post, send them back to login page and show them an error
-		return HttpResponseRedirect('/blah/')
+		messages.error(request, 'You must fill out all fields!')
+		return HttpResponseRedirect('/create_post/')
+	if f.cleaned_data['category'] == "null" or f.cleaned_data['subcategory'] == "null":
+		messages.error(request, 'You must fill out all fields!')
+		return HttpResponseRedirect('/create_post/')
+	#return HttpResponse(f.cleaned_data['category'])
 	title = f.cleaned_data['title']
 	category = f.cleaned_data['category']
 	subcategory = f.cleaned_data['subcategory']
 	summary = f.cleaned_data['summary']
 	price = f.cleaned_data['price']
 	next = reverse('displayCells')
+
 	resp = requests.post('http://expul:8000/api/v1/create_listing_exp_api/', data={"title":title, "category":category, "subcategory":subcategory, "summary":summary, "price":price, "auth":auth})
 	response = HttpResponseRedirect(next)
 	return response
