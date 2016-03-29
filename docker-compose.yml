@@ -1,36 +1,11 @@
-# isa-mysql:
-#    image: mysql:5.7.10
-#    environment:
-#     MYSQL_DATABASE: cs4501
-#     MYSQL_USER: www
-#     DATABASE_PASSWORD: S3cure
-#     MYSQL_ROOT_PASSWORD: logmeon
-# isa-models:
-#    image: tp33/django:1.2
-#    external_links:
-#      - mysql:db
-#    ports:
-#      - "8000:8000"
-#    volumes:
-#      - /Users/niti/ISA-Project/uvalist-models:/app
-#    command: "python manage.py runmodwsgi"
-# isa-exp:
-#    image: tp33/django:1.2
-#    links:
-#      - isa-mysql:db
-# isa-web:
-#    image: tp33/django:1.2
-#    links:
-#      - isa-mysql:db
-
 models:
-   image: tp33/django:1.2
+   image: tp33/django-docker:1.3
    external_links:
       - mysql:db
    ports:
       - "8001:8000"
    volumes:
-      - /Users/niti/ISA-Project/listuva/modelsul:/app
+      - /Users/aivener/ISA-Project/modelsul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
 
 exp:
@@ -40,7 +15,7 @@ exp:
    ports:
       - "8002:8000"
    volumes:
-      - /Users/niti/ISA-Project/listuva/expul:/app
+      - /Users/aivener/ISA-Project/expul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
 
 web:
@@ -50,5 +25,31 @@ web:
    ports:
       - "8000:8000"
    volumes:
-      - /Users/niti/ISA-Project/listuva/frontul:/app
+      - /Users/aivener/ISA-Project/frontul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
+
+kafka:
+   image: spotify/kafka
+   container_name: kafka
+   environment:
+      ADVERTISED_HOST: kafka
+      ADVERTISED_PORT: 9092
+   hostname: kafka
+
+es:
+   image: elasticsearch:2.0
+   container_name: es
+   ports:
+      - "9200:9200"
+
+batch:
+   image: tp33/django-docker:1.3
+   container_name: batch
+   links:
+      - kafka:kafka
+      - es:es
+   volumes:
+      - /Users/aivener/ISA-Project:/app
+   ports:
+      - "8003:8000"
+   command: "python batch.py"
