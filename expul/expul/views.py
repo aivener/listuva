@@ -7,6 +7,7 @@ from django.shortcuts import render
 import json
 import requests
 from django.contrib.auth import hashers
+from kafka import KafkaProducer
 
 
 #get all info for home page
@@ -188,4 +189,15 @@ def create_listing_exp_api(request):
 																		"subcategory": subcategory,
 																		"summary": summary,
 																		"price":price})
+
+	producer = KafkaProducer(bootstrap_servers='kafka:9092')
+	some_new_listing = {'title': title, 'description': summary, 'id':user_id}
+	producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
 	return JsonResponse(post, content_type="application/json", safe=False)
+
+
+
+
+
+
+
