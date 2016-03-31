@@ -2,6 +2,8 @@ from django import forms
 import requests
 from django.core import serializers
 import json
+from django.forms import ModelForm
+
 
 catergories = requests.get('http://expul:8000/api/v1/getallcatname/')
 data = json.loads(catergories.text)
@@ -13,11 +15,11 @@ for val in data:
 choices = zip(nums, names)
 
 class LoginForm(forms.Form):
-	username = forms.CharField(required=True)
+	email = forms.CharField(required=True)
 	password = forms.CharField(required=True, widget=forms.PasswordInput)
 
 class SignUpForm(forms.Form):
-	username = forms.CharField(required=False)
+	email = forms.CharField(required=False)
 	password = forms.CharField(required=True, widget=forms.PasswordInput)
 	name = forms.CharField(required=True)
 	year = forms.IntegerField(required=True)

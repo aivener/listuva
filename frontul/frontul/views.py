@@ -65,13 +65,14 @@ def login(request):
 		# bogus form post, send them back to login page and show them an error
 		messages.error(request, 'You must fill out all fields')
 		return HttpResponseRedirect('/login/')
-	username = f.cleaned_data['username']
+	email = f.cleaned_data['email']
 	password = f.cleaned_data['password'] 
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 
-	#send typed username and hashed password to exp level
-	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"username": username, "password": password}).json()
+	#send typed email and password to exp level
+	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"email": email, "password": password}).json()
+	#return HttpResponse(resp)
 	#return JsonResponse(resp.json(), safe=False)
 	if not resp or not resp[0]['pk']: #no student with that username/password, send back to login page with error
 		messages.error(request, 'Invalid username and/or password.')
@@ -93,13 +94,13 @@ def signup(request):
 		# bogus form post, send them back to login page and show them an error
 		messages.error(request, 'You must fill out all fields!')
 		return HttpResponseRedirect('/signup/')
-	username = f.cleaned_data['username']
+	email = f.cleaned_data['email']
 	password = f.cleaned_data['password']
 	name = f.cleaned_data['name']
 	year = f.cleaned_data['year']
 	gender = f.cleaned_data['gender']
 	next = reverse('login')
-	resp = requests.post('http://expul:8000/api/v1/signup_exp_api/', data={"username":username,"password":password,"name":name,"year":year, "gender":gender}).json()
+	resp = requests.post('http://expul:8000/api/v1/signup_exp_api/', data={"email":email,"password":password,"name":name,"year":year, "gender":gender}).json()
 	response = HttpResponseRedirect(next)
 	return response
 

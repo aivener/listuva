@@ -131,14 +131,16 @@ def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", v
 
 
 def login_exp_api(request): #takes in data from frontul login method to authenticate
-	input_username = request.POST.get('username', 'default')
+	#return HttpResponse("hi")
+	input_email = request.POST.get('email', 'default')
 	input_password = request.POST.get('password', 'default') #this is hashed already
 
+
 	#get all students with this username
-	student_with_username = requests.get('http://modelsul:8000/api/v1/student/' + input_username)
-	deser_student = json.loads(student_with_username.text)
+	student_with_email = requests.get('http://modelsul:8000/api/v1/studentByEmail/' + input_email)
+	deser_student = json.loads(student_with_email.text)
 	#check if that returned a student
-	if student_with_username:
+	if student_with_email:
 		#get hashed password of that username
 		#check if equal to password passed into the method
 		for curr_student in deser_student:
@@ -155,7 +157,7 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 
 
 def signup_exp_api(request):
-	username = request.POST.get('username', 'default')
+	email = request.POST.get('email', 'default')
 	password = request.POST.get('password', 'default')
 	name = request.POST.get('name', 'default')
 	year = request.POST.get('year', 'default')
@@ -165,7 +167,7 @@ def signup_exp_api(request):
 																		"password": password,
 																		"year": year,
 																		"gender": gender,
-																		"email":username})
+																		"email":email})
 	return JsonResponse(student.json(), content_type="application/json", safe=False)
 
 #makes assumption that the values for foreign keys are integers

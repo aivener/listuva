@@ -37,6 +37,8 @@ urlpatterns = [
     url(r'^api/v1/get_category/(?P<cat_id>\d+)$', views.get_category, name="get_category"),
     url(r'^api/v1/student/(?P<student_id>\d+)$', views.student, name="student"),
     url(r'^api/v1/student/(?P<name>\w+)$', views.getStudentByUsername, name="getStudentByUsername"),
+    url(r'^api/v1/studentByEmail/(?P<email>\w+|[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})$', views.getStudentByEmail, name="getStudentByEmail"),
+
 
 
     url(r'^api/v1/post$', views.list_post, name="list_post"),

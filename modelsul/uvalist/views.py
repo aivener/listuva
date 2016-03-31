@@ -69,6 +69,18 @@ def getStudentByUsername(request, name):
     except Student.DoesNotExist:
         return _error_response(request, "students not found")
 
+def getStudentByEmail(request, email):
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+
+    try:
+        s = Student.objects.filter(email=email)
+        result = serializers.serialize('json', Student.objects.filter(email=email))
+        return HttpResponse(result, content_type='json')
+
+    except Student.DoesNotExist:
+        return _error_response(request, "students not found")
+
 def list_post(request):
     if request.method != 'GET':
         return _error_response(request, "must make GET request")
@@ -167,6 +179,7 @@ def create_student(request):
         return _error_response(request, "missing required fields")
 
     s = Student(name = request.POST['name'],
+                email = request.POST['email'],
                 gender = request.POST['gender'],
                 year = request.POST['year'],
                 password=hashers.make_password(str.strip(request.POST['password'])),
