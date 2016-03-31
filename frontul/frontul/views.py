@@ -52,6 +52,10 @@ def displaySubCatPosts(request,subCatID):
 
 #called when user submits login form
 def login(request):
+	auth = request.COOKIES.get('auth')
+	if auth: #already logged in, redirect to home page
+		return HttpResponseRedirect(reverse("displayCells"))
+
 	if request.method == 'GET':
 		l_form = LoginForm()
 		next = request.GET.get('login') or reverse('displayCells')
@@ -62,9 +66,7 @@ def login(request):
 		messages.error(request, 'You must fill out all fields')
 		return HttpResponseRedirect('/login/')
 	username = f.cleaned_data['username']
-	password = hashers.make_password(f.cleaned_data['password'], salt="bar") #hashes password that was typed into form - this works
-	#return HttpResponse(password)
-
+	password = f.cleaned_data['password'] 
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 
@@ -156,15 +158,6 @@ def create_post(request):
 	resp = requests.post('http://expul:8000/api/v1/create_listing_exp_api/', data={"title":title, "category":category, "subcategory":subcategory, "summary":summary, "price":price, "auth":auth})
 	response = HttpResponseRedirect(next)
 	return response
-
-#     ...
-	#resp = create_listing_exp_api(auth, ...)
-# 	if resp and not resp['ok']:
-# 		if resp['error'] == exp_srvc_errors.E_UNKNOWN_AUTH:
-# 			# exp service reports invalid authenticator -- treat like user not logged in
-# 			return HttpResponseRedirect(reverse("login") + "?next=" + reverse("create_post")
-# 	...
-# 	return render("create_post_success.html", ...)
 
 
 #delete auth cookie and delete auth from database

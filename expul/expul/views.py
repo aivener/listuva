@@ -143,7 +143,7 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 		#check if equal to password passed into the method
 		for curr_student in deser_student:
 			real_pword = curr_student['fields']['password'] #this is hashed already
-			if str.strip(real_pword) == str.strip(input_password):
+			if hashers.check_password(input_password, real_pword):
 				#successful match
 				new_auth = requests.post('http://modelsul:8000/api/v1/authenticator/', data={"pk": curr_student['pk']})
 				return JsonResponse(new_auth.json(), content_type="application/json", safe=False)

@@ -169,7 +169,7 @@ def create_student(request):
     s = Student(name = request.POST['name'],
                 gender = request.POST['gender'],
                 year = request.POST['year'],
-                password=hashers.make_password(str.strip(request.POST['password']), salt="bar"),
+                password=hashers.make_password(str.strip(request.POST['password'])),
                 )
 
     try:
