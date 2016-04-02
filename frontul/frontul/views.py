@@ -104,6 +104,21 @@ def signup(request):
 	response = HttpResponseRedirect(next)
 	return response
 
+def search(request):
+	if request.method == 'GET':
+		s_form = SearchForm()
+		next = request.GET.get('search') or reverse('displayCells')
+		return render(request, 'search.html', {'form': s_form})
+	f = SearchForm(request.POST)
+	if not f.is_valid():
+		# bogus form post, send them back to login page and show them an error
+		messages.error(request, 'You must fill out all fields!')
+		return HttpResponseRedirect('/blah/')
+	searchText = f.cleaned_data['searchText']
+	next = reverse('search')
+	resp = requests.post('http://expul:8000/api/v1/search/', data={"searchText":searchText})
+	response = HttpResponseRedirect(next)
+	return JsonResponse(resp.json(), safe=False)
 
 def create_post(request):
 	auth = request.COOKIES.get('auth')

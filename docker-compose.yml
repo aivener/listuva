@@ -12,6 +12,8 @@ exp:
    build: .
    links:
       - models:modelsul
+      - kafka:kafka
+      - es:es
    ports:
       - "8002:8000"
    volumes:
@@ -48,6 +50,7 @@ batch:
    links:
       - kafka:kafka
       - es:es
+      # - exp:expul
    volumes:
       - /Users/aivener/ISA-Project:/app
    ports:

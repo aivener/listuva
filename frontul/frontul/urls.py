@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^subcatpost/(?P<subCatID>\d+)$', views.displaySubCatPosts, name="displaySubCatPosts"),
     url(r'^create_post/', views.create_post, name="create_post"),
     url(r'^logout/', views.logoutUser, name="logoutUser"),
+    url(r'^search/', views.search, name="search"),
 ]

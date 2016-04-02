@@ -32,5 +32,5 @@ urlpatterns = [
     url(r'^api/v1/login_exp_api/$', views.login_exp_api, name="login_exp_api"),
     url(r'^api/v1/signup_exp_api/$', views.signup_exp_api, name="signup_exp_api"),
     url(r'^api/v1/create_listing_exp_api/$', views.create_listing_exp_api, name="create_listing_exp_api"),
-
+    url(r'^api/v1/search/$', views.search_exp_api, name="search_exp_api"),
 ]

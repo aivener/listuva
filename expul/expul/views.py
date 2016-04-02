@@ -3,11 +3,11 @@ from django.http import JsonResponse
 from django.core import serializers
 from django.shortcuts import get_object_or_404
 from django.shortcuts import render
-
 import json
 import requests
 from django.contrib.auth import hashers
 from kafka import KafkaProducer
+from elasticsearch import Elasticsearch
 
 
 #get all info for home page
@@ -189,15 +189,21 @@ def create_listing_exp_api(request):
 																		"subcategory": subcategory,
 																		"summary": summary,
 																		"price":price})
-
 	producer = KafkaProducer(bootstrap_servers='kafka:9092')
 	some_new_listing = {'title': title, 'description': summary, 'id':user_id}
 	producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
-	return JsonResponse(post, content_type="application/json", safe=False)
 
+	es = Elasticsearch(['es'])
+	es.index(index='listing_index', doc_type='listing', id=some_new_listing['id'], body=some_new_listing)
+	es.indices.refresh(index="listing_index")
+	
+	# return JsonResponse(post.json(), content_type="application/json", safe=False)
 
-
-
+def search_exp_api(request):
+	searchText = request.POST.get('searchText', 'default')
+	es = Elasticsearch(['es'])
+	results = es.search(index='listing_index', body={'query': {'query_string': {'query': searchText}}, 'size': 10})
+	return JsonResponse(results)
 
 
 

@@ -2,8 +2,6 @@ from django import forms
 import requests
 from django.core import serializers
 import json
-from django.forms import ModelForm
-
 
 catergories = requests.get('http://expul:8000/api/v1/getallcatname/')
 data = json.loads(catergories.text)
@@ -31,3 +29,6 @@ class CreatePostForm(forms.Form):
 	subcategory = forms.CharField(required=True)
 	summary = forms.CharField(required=True)
 	price = forms.DecimalField(max_digits = 10, decimal_places = 2)
+
+class SearchForm(forms.Form):
+	searchText = forms.CharField(required=True)
