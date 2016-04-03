@@ -174,7 +174,12 @@ def signup_exp_api(request):
 #makes assumption that the values for foreign keys are integers
 def create_listing_exp_api(request):
 	#TODO: Didnt knwo how to access which user is posting
-	user_id = 1
+	# user_id = 1
+
+	auth = request.POST.get('auth')
+	user_id = requests.get('http://modelsul:8000/api/v1/get_userid_auth/' + auth).json()
+	user_id1 = user_id['resp']['user_id']
+
 	title = request.POST.get('title', 'default')
 	category = request.POST.get('category', 'default')
 	subcategory = request.POST.get('subcategory', 'default')
@@ -183,27 +188,35 @@ def create_listing_exp_api(request):
 	#Needs to verify that the person is authorized
 	auth = request.POST.get('auth', 'default')
 
-	post = requests.post('http://modelsul:8000/api/v1/create_post/', data={"user_id": user_id,
+	post = requests.post('http://modelsul:8000/api/v1/create_post/', data={"user_id": user_id1,
 																		"title": title,
 																		"category": category,
 																		"subcategory": subcategory,
 																		"summary": summary,
 																		"price":price})
 	producer = KafkaProducer(bootstrap_servers='kafka:9092')
-	some_new_listing = {'title': title, 'description': summary, 'id':user_id}
+	some_new_listing = {'title': title, 'description': summary, 'id':post.json()['id']}
 	producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
-
-	es = Elasticsearch(['es'])
-	es.index(index='listing_index', doc_type='listing', id=some_new_listing['id'], body=some_new_listing)
-	es.indices.refresh(index="listing_index")
-	
-	# return JsonResponse(post.json(), content_type="application/json", safe=False)
+	return HttpResponse(post, content_type="application/json")
 
 def search_exp_api(request):
 	searchText = request.POST.get('searchText', 'default')
 	es = Elasticsearch(['es'])
-	results = es.search(index='listing_index', body={'query': {'query_string': {'query': searchText}}, 'size': 10})
-	return JsonResponse(results)
+	if(es.indices.exists('listing_index')):
+		result = es.search(index='listing_index', body={'query': {'query_string': {'query': searchText}}, 'size': 10})
+		posts_data = result['hits']['hits']
+		# return HttpResponse(posts_data)
+		posts_list = []
 
+		for p in posts_data:
+			posts = {}
+			posts['title'] = p['_source']['title']
+			# posts['id'] = p['_source']['pk']
+			posts['description'] = p['_source']['description']
+			posts_list.append(posts)
+
+		return JsonResponse(posts_list, safe=False)
+
+	return JsonResponse({"No index created yet":""})
 
 

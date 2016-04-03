@@ -13,6 +13,7 @@ from django.core.urlresolvers import reverse
 from .forms import *
 from django.contrib.auth import hashers
 from django.contrib import messages
+from django.shortcuts import render_to_response
 
 
 
@@ -111,14 +112,14 @@ def search(request):
 		return render(request, 'search.html', {'form': s_form})
 	f = SearchForm(request.POST)
 	if not f.is_valid():
-		# bogus form post, send them back to login page and show them an error
 		messages.error(request, 'You must fill out all fields!')
-		return HttpResponseRedirect('/blah/')
+		return HttpResponseRedirect('/search/')
 	searchText = f.cleaned_data['searchText']
 	next = reverse('search')
 	resp = requests.post('http://expul:8000/api/v1/search/', data={"searchText":searchText})
-	response = HttpResponseRedirect(next)
-	return JsonResponse(resp.json(), safe=False)
+	resp_data = json.loads(resp.text)
+	# response = HttpResponseRedirect(next)
+	return render_to_response('search.html', {"posts": resp_data})
 
 def create_post(request):
 	auth = request.COOKIES.get('auth')

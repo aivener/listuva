@@ -31,4 +31,4 @@ class CreatePostForm(forms.Form):
 	price = forms.DecimalField(max_digits = 10, decimal_places = 2)
 
 class SearchForm(forms.Form):
-	searchText = forms.CharField(required=True)
+	searchText = forms.CharField(required=True, label='Query', max_length=50)

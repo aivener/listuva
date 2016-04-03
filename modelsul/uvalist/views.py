@@ -11,6 +11,7 @@ from django.conf import settings
 import datetime
 from django.utils.timezone import utc
 from django.contrib.auth import hashers
+from django.forms.models import model_to_dict
 
 def index(request):
     return HttpResponse("Hello, world! Welcome to the very beginning of UVaList.")
@@ -120,9 +121,8 @@ def create_post(request):
         category = category,
         subcategory =subcategory)
     p.save()
-    result = serializers.serialize('json', Post.objects.filter(title=request.POST['title']))
-
-    return HttpResponse(result, content_type='json')
+    post = model_to_dict(Post.objects.get(pk=p.pk))
+    return JsonResponse(post)
 
 def list_comment(request):
     result = serializers.serialize('json', Comment.objects.all())
@@ -160,16 +160,16 @@ def authenticator(request):
     result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
     return HttpResponse(result, content_type='json')
 
-def get_user_by_authenticator(request, authenticator):
-    if request.method != 'GET':
-        return _error_response(request, "must make GET request")
+# def get_user_by_authenticator(request, authenticator):
+#     if request.method != 'GET':
+#         return _error_response(request, "must make GET request")
 
-    try:
-        u = Authenticator.objects.get(authenticator=authenticator)
-    except Authenticator.DoesNotExist:
-        return _error_response(request, "authenticator not found")
+#     try:
+#         u = Authenticator.objects.get(authenticator=authenticator)
+#     except Authenticator.DoesNotExist:
+#         return _error_response(request, "authenticator not found")
 
-    return JsonResponse({}, content_type="application/json")
+#     return JsonResponse({}, content_type="application/json")
 
 def create_student(request):
     #should add try catch statements
@@ -279,6 +279,16 @@ def get_sub_category(request, subcat_id):
 
     return _success_response(request, {'title': s.title, 'category': s.category })
 
+def get_userid_auth(request, auth): #get user id given auth code
+    if request.method != 'GET':
+        return _error_response(request, "must make GET request")
+    try:
+        auth = Authenticator.objects.get(pk=auth)
+        student = auth.user_id
+        user_id = student.pk
+    except models.Authenticator.DoesNotExist:
+        return _error_response(request, "category not found")
+    return _success_response(request, {'user_id': user_id})
 
 #need to remove this method
 def category(request, category_id):

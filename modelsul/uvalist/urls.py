@@ -50,7 +50,8 @@ urlpatterns = [
 
     url(r'^api/v1/authenticator/$', views.authenticator, name="authenticator"),
     url(r'^api/v1/authenticator/(?P<user_id>\d+)$', views.authenticator, name="authenticator"),
-    url(r'^api/v1/get_user_by_authenticator/(?P<authenticator>\d+)$', views.get_user_by_authenticator, name="get_user_by_authenticator"),
+    # url(r'^api/v1/get_user_by_authenticator/(?P<authenticator>\d+)$', views.get_user_by_authenticator, name="get_user_by_authenticator"),
+    url(r'^api/v1/get_userid_auth/(?P<auth>\w+)$', views.get_userid_auth, name="get_userid_auth"),
 
 
 ]
