@@ -16,8 +16,7 @@ from django.forms.models import model_to_dict
 
 def index(request):
     return HttpResponse("Hello, world! Welcome to the very beginning of UVaList.")
-
-
+    
 #List Methods
 def list_category(request):
     if request.method != 'GET':

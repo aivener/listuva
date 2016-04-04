@@ -24,7 +24,6 @@ def displayCells(request):
 	cats_subcats = requests.get('http://expul:8000/api/v1/maketable')
 	deser = json.loads(cats_subcats.text)
 	return render(request, 'home.html', {'cells_dict':deser})
-	#return JsonResponse(cells_dict, content_type='json', safe=False)
 
 def displayCatPosts(request,catID):
 	auth = request.COOKIES.get('auth')
@@ -85,13 +84,11 @@ def login(request):
 		return HttpResponseRedirect('/login/')
 	email = f.cleaned_data['email']
 	password = f.cleaned_data['password']
-	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 
 	#send typed email and password to exp level
 	resp = requests.post('http://expul:8000/api/v1/login_exp_api/', data={"email": email, "password": password}).json()
-	#return HttpResponse(resp)
-	#return JsonResponse(resp.json(), safe=False)
+
 	if not resp or not resp[0]['pk']: #no student with that username/password, send back to login page with error
 		messages.error(request, 'Invalid username and/or password.')
 		return HttpResponseRedirect(reverse('login'))

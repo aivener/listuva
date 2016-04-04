@@ -53,20 +53,17 @@ overflow: hidden;
     <script>
     $( document ).ready(function() {
         console.log( "document loaded" );
-        
-        //theDict = "{{choices}}"; //get the dictionary
+
+
 		var js_dict = {
 	       {% for k, v in choices %}
 	       	"{{ k }}": {
 	       		{% for k1,v1 in v %}
 	       			"{{ k1 }}": "{{ v1 }}"{% if not forloop.last %},{% endif %}
-	       		{% endfor %}		
+	       		{% endfor %}
 	   		}{% if not forloop.last %},{% endif %}
 	       {% endfor %}
 	   }
-        // key = $(this).value();
-
-       
 
 		$( "#category" ).on('change', function() {
 			var str = "";
@@ -86,18 +83,10 @@ overflow: hidden;
 		});
 
 	});
- 
+
     $( window ).load(function() {
 
     });
-   //  $( "#category" ).on('change', function() {
-   //  	// var str = "";
-   //  	// $( "select option:selected" ).each(function() {
-   //   //  		str += $( this ).text() + " ";
-   //  	// });
-   //  	// $( "div" ).text( str );
-   //  	alert("{{text}}");
-  	// });
     </script>
 </head>
 <body>
@@ -109,7 +98,7 @@ overflow: hidden;
     	{% endfor %}
     {% endif %}
     Title {{ form.title }} <br><br>
-    Category 
+    Category
     <select id="category" name = "category">
     	<option value="null">-----</option>
 		{% for key, val in cat_choices %}
@@ -120,7 +109,7 @@ overflow: hidden;
 
     Subcategory
     <select id = "subcategory" name="subcategory">
-		<option value="null">-----</option> 
+		<option value="null">-----</option>
 	</select><br><br>
 
     Summary {{ form.summary }} <br><br>

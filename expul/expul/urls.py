@@ -29,7 +29,6 @@ urlpatterns = [
     url(r'^api/v1/getallcatname/$', views.getAllCatName, name="getAllCatName"),
     url(r'^api/v1/getallsubcatname/$', views.getAllSubCatName, name="getAllSubCatName"),
     url(r'^api/v1/getPost/(?P<postID>\d+)$', views.getPost, name="getPost"),
-    # url(r'^api/v1/login_exp_api/username=(?P<username>\d+)$&password=(?P<password>\d+)$', views.login_exp_api, name="login_exp_api"),
     url(r'^api/v1/login_exp_api/$', views.login_exp_api, name="login_exp_api"),
     url(r'^api/v1/signup_exp_api/$', views.signup_exp_api, name="signup_exp_api"),
     url(r'^api/v1/create_listing_exp_api/$', views.create_listing_exp_api, name="create_listing_exp_api"),

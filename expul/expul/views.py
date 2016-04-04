@@ -10,10 +10,6 @@ from kafka import KafkaProducer
 from elasticsearch import Elasticsearch
 
 
-#get all info for home page
-
-#get individual item info (if click it) -- price, comments, etc. - build it together, serialize into JSON, pass to top layer to turn into something to look at
-
 def makeTable(request): #returns json: key=category, value=subcategory
 	#get json of all categories and subcategories
 	all_cats = requests.get('http://modelsul:8000/api/v1/category')
@@ -110,7 +106,6 @@ def getAllSubCatName(request):
 		cat_id = subcat["fields"]["category"]
 		subcat_id = subcat["pk"]
 		new_info[cat_id][subcat_id] = subcat["fields"]["title"]
-	# 	new_info[curr_cat_id] = str(cat['fields']['title'])
 	return JsonResponse(new_info, content_type='application/json')
 
 def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", value= the name
@@ -204,7 +199,6 @@ def search_exp_api(request):
 	es = Elasticsearch(['es'])
 	if(es.indices.exists('listing_index')):
 		result = es.search(index='listing_index', body={'query': {'query_string': {'query': searchText}}, 'size': 10})
-		# return JsonResponse(result, safe=False)
 		posts_data = result['hits']['hits']
 		posts_list = []
 

@@ -6,7 +6,6 @@ models:
       - "8001:8000"
    volumes:
       - /Users/niti/ISA-Project/listuva/modelsul:/app
-   # command: bash -c "python loaddad && python run the script && python manage.py runmodwsgi --reload-on-change"
    command: "python manage.py runmodwsgi --reload-on-change"
 
 exp:
