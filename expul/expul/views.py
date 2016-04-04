@@ -132,7 +132,6 @@ def getCatNameFromSubcat(request, subcatID): #returns json key="cateogryName", v
 
 
 def login_exp_api(request): #takes in data from frontul login method to authenticate
-	#return HttpResponse("hi")
 	input_email = request.POST.get('email', 'default')
 	input_password = request.POST.get('password', 'default') #this is hashed already
 
@@ -177,9 +176,6 @@ def signup_exp_api(request):
 
 #makes assumption that the values for foreign keys are integers
 def create_listing_exp_api(request):
-	#TODO: Didnt knwo how to access which user is posting
-	# user_id = 1
-
 	auth = request.POST.get('auth')
 	user_id = requests.get('http://modelsul:8000/api/v1/get_userid_auth/' + auth).json()
 	user_id1 = user_id['resp']['user_id']
@@ -201,7 +197,7 @@ def create_listing_exp_api(request):
 	producer = KafkaProducer(bootstrap_servers='kafka:9092')
 	some_new_listing = {'title': title, 'description': summary, 'id':post.json()['id']}
 	producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
-	return HttpResponse(post, content_type="application/json")
+	return JsonResponse(post, content_type="application/json")
 
 def search_exp_api(request):
 	searchText = request.POST.get('searchText', 'default')
@@ -210,7 +206,6 @@ def search_exp_api(request):
 		result = es.search(index='listing_index', body={'query': {'query_string': {'query': searchText}}, 'size': 10})
 		# return JsonResponse(result, safe=False)
 		posts_data = result['hits']['hits']
-		# return HttpResponse(posts_data)
 		posts_list = []
 
 		for p in posts_data:

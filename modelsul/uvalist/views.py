@@ -162,28 +162,28 @@ def authenticator(request):
     return HttpResponse(result, content_type='json')
 
 def create_student(request):
-    #should add try catch statements
     if request.method != 'POST':
         return _error_response(request, "must make POST request")
     if 'name' not in request.POST or 'gender' not in request.POST or 'year' not in request.POST or 'password' not in request.POST or 'email' not in request.POST:
         return _error_response(request, "missing required fields")
-
-    s = Student(name = request.POST['name'],
-                email = request.POST['email'],
-                gender = request.POST['gender'],
-                year = request.POST['year'],
-                password=hashers.make_password(str.strip(request.POST['password'])),
-                )
-    try:
-        s.save()
-        result = serializers.serialize('json', Student.objects.filter(name=request.POST['name']))
-
-        return HttpResponse(result, content_type='json')
-
-    # except db.Error:
-    except db.Error:
-        return _error_response(request, "db error")
-    return _success_response(request, {'user_id': s.pk})
+    all_students = Student.objects.filter(email=request.POST['email'])
+    if not all_students.exists():
+        s = Student(name = request.POST['name'],
+                    email = request.POST['email'],
+                    gender = request.POST['gender'],
+                    year = request.POST['year'],
+                    password=hashers.make_password(str.strip(request.POST['password'])),
+                    )
+        try:
+            s.save()
+            result = serializers.serialize('json', Student.objects.filter(name=request.POST['name']))
+            # return HttpResponse(result, content_type='json')
+            return _success_response(request, {'user_id': s.pk})
+        except db.Error:
+            return _error_response(request, "db error")
+        return _success_response(request, {'user_id': s.pk})
+    else:
+        return _error_response(request, "that user already exists!")
 
 
 def get_student(request, student_id):

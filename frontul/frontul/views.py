@@ -8,7 +8,6 @@ import requests
 #import exp_srvc_errors  # where I put some error codes the exp srvc can return
 from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
-
 from django.core.urlresolvers import reverse
 from .forms import *
 from django.contrib.auth import hashers
@@ -67,7 +66,6 @@ def displaySinglePost(request,postID):
 	cat = requests.get('http://expul:8000/api/v1/getcatname/' + str(catNum))
 	c = cat.json()
 
-
 	return render(request, 'post.html', {'post':ps, 'subcat': r, 'cat': c})
 
 #called when user submits login form
@@ -121,6 +119,9 @@ def signup(request):
 	gender = f.cleaned_data['gender']
 	next = reverse('login')
 	resp = requests.post('http://expul:8000/api/v1/signup_exp_api/', data={"email":email,"password":password,"name":name,"year":year, "gender":gender}).json()
+	if not resp['ok']:
+		messages.error(request, 'A user with that email already exists!')
+		return HttpResponseRedirect('/signup/')
 	response = HttpResponseRedirect(next)
 	return response
 
@@ -134,10 +135,8 @@ def search(request):
 		messages.error(request, 'You must fill out all fields!')
 		return HttpResponseRedirect('/search/')
 	searchText = f.cleaned_data['searchText']
-	next = reverse('search')
 	resp = requests.post('http://expul:8000/api/v1/search/', data={"searchText":searchText})
 	resp_data = json.loads(resp.text)
-	# response = HttpResponseRedirect(next)
 	return render_to_response('search.html', {"posts": resp_data})
 
 def create_post(request):
@@ -183,7 +182,6 @@ def create_post(request):
 	if f.cleaned_data['category'] == "null" or f.cleaned_data['subcategory'] == "null":
 		messages.error(request, 'You must fill out all fields!')
 		return HttpResponseRedirect('/create_post/')
-	#return HttpResponse(f.cleaned_data['category'])
 	title = f.cleaned_data['title']
 	category = f.cleaned_data['category']
 	subcategory = f.cleaned_data['subcategory']
