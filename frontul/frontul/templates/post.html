@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+
+.headitem{
+  color: #428bca;
+}
+
+#titleCat
+{
+    display: block;
+    padding: 14px 0 15px 0;
+    font-size: 30px;
+    font-weight: 100;
+    margin-bottom: 0px;
+    border-bottom: 1px solid;
+}
+</style>
+
+<div class="container posts">
+
+<h4  class = "row headitem" id="titleCat">  {{cat.catName}} -> {{subcat.subcatName}} </h4>
+
+<br>
+  <div id="products" class="row list-group">
+          <div class="item  col-md-12 list-group-item">
+              <div class="thumbnail">
+                <div class="caption">
+                      <span class="badge pull-right">  ${{post.price}}</span>
+                        <h4 class="group inner list-group-item-heading">{{post.title}}</h4>
+                        <p class="group inner list-group-item-text"> {{post.summary}} </p>
+              </div>
+            </div>
+          </div>
+  </div>
+
+</div>
+</body>
+
+
+
+
+
+{% endblock %}

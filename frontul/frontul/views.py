@@ -51,6 +51,25 @@ def displaySubCatPosts(request,subCatID):
 	deser2 = json.loads(y.text)
 	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1, 'catName': deser2})
 
+def displaySinglePost(request,postID):
+	# auth = request.COOKIES.get('auth')
+	# if not auth:
+	# 	# handle user not logged in while trying to see posts
+	# 	return HttpResponseRedirect(reverse("login"))
+	c = requests.get('http://expul:8000/api/v1/getPost/' + postID)
+	ps = c.json()
+
+	scatNum = ps['subcategory']
+	subcat = requests.get('http://expul:8000/api/v1/getsubcatname/' + str(scatNum))
+	r = subcat.json()
+
+	catNum = ps['category']
+	cat = requests.get('http://expul:8000/api/v1/getcatname/' + str(catNum))
+	c = cat.json()
+
+
+	return render(request, 'post.html', {'post':ps, 'subcat': r, 'cat': c})
+
 #called when user submits login form
 def login(request):
 	auth = request.COOKIES.get('auth')
@@ -67,7 +86,7 @@ def login(request):
 		messages.error(request, 'You must fill out all fields')
 		return HttpResponseRedirect('/login/')
 	email = f.cleaned_data['email']
-	password = f.cleaned_data['password'] 
+	password = f.cleaned_data['password']
 	#next = f.cleaned_data.get('next') or reverse('home')
 	next = reverse('displayCells') #reverse takes name of the view and returns the URL of the view
 

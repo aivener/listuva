@@ -5,7 +5,7 @@ models:
    ports:
       - "8001:8000"
    volumes:
-      - /Users/aivener/ISA-Project/modelsul:/app
+      - /Users/niti/ISA-Project/listuva/modelsul:/app
    # command: bash -c "python loaddad && python run the script && python manage.py runmodwsgi --reload-on-change"
    command: "python manage.py runmodwsgi --reload-on-change"
 
@@ -18,7 +18,7 @@ exp:
    ports:
       - "8002:8000"
    volumes:
-      - /Users/aivener/ISA-Project/expul:/app
+      - /Users/niti/ISA-Project/listuva/expul:/app
    command: bash -c "pip install requests && python manage.py runmodwsgi --reload-on-change"
 
 web:
@@ -28,7 +28,7 @@ web:
    ports:
       - "8000:8000"
    volumes:
-      - /Users/aivener/ISA-Project/frontul:/app
+      - /Users/niti/ISA-Project/listuva/frontul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
 
 kafka:
@@ -53,7 +53,7 @@ batch:
       - es:es
       # - exp:expul
    volumes:
-      - /Users/aivener/ISA-Project:/app
+      - /Users/niti/ISA-Project/listuva:/app
    ports:
       - "8003:8000"
    command: "python batch.py"

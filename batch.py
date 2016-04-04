@@ -3,8 +3,6 @@ import json
 import time
 from elasticsearch import Elasticsearch
 
-
-# print("HEY MAN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 time.sleep(10)
 
 consumer = KafkaConsumer('new-listings-topic', group_id='listing-indexer', bootstrap_servers=['kafka:9092'])

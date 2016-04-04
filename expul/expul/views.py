@@ -155,6 +155,10 @@ def login_exp_api(request): #takes in data from frontul login method to authenti
 		return JsonResponse({}, content_type="application/json")
 
 
+def getPost(request, postID):
+	post = requests.get('http://modelsul:8000/api/v1/post/' + postID)
+	deser = json.loads(post.text)
+	return JsonResponse(deser, content_type="application/json")
 
 
 def signup_exp_api(request):
@@ -201,9 +205,11 @@ def create_listing_exp_api(request):
 
 def search_exp_api(request):
 	searchText = request.POST.get('searchText', 'default')
+	searchText = "allie"
 	es = Elasticsearch(['es'])
 	if(es.indices.exists('listing_index')):
 		result = es.search(index='listing_index', body={'query': {'query_string': {'query': searchText}}, 'size': 10})
+		# return JsonResponse(result, safe=False)
 		posts_data = result['hits']['hits']
 		# return HttpResponse(posts_data)
 		posts_list = []
@@ -211,12 +217,10 @@ def search_exp_api(request):
 		for p in posts_data:
 			posts = {}
 			posts['title'] = p['_source']['title']
-			# posts['id'] = p['_source']['pk']
+			posts['id'] = p['_source']['id']
 			posts['description'] = p['_source']['description']
 			posts_list.append(posts)
 
 		return JsonResponse(posts_list, safe=False)
 
 	return JsonResponse({"No index created yet":""})
-
-

@@ -97,8 +97,8 @@ def post(request, post_id):
         return _error_response(request, "must make GET request")
 
     try:
-        result = serializers.serialize('json', Post.objects.filter(id=post_id))
-        return HttpResponse(result, content_type='json')
+        result= model_to_dict(Post.objects.get(pk=post_id))
+        return JsonResponse(result, content_type='json')
     except Post.DoesNotExist:
         return _error_response(request, "post not found")
 

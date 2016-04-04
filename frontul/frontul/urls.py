@@ -25,6 +25,7 @@ urlpatterns = [
     url(r'^login/', views.login, name="login"),
     url(r'^signup/', views.signup, name="signup"),
     url(r'^catpost/(?P<catID>\d+)$', views.displayCatPosts, name="displayPosts"),
+    url(r'^displaySinglePost/(?P<postID>\d+)$', views.displaySinglePost, name="displaySinglePost"),
     url(r'^subcatpost/(?P<subCatID>\d+)$', views.displaySubCatPosts, name="displaySubCatPosts"),
     url(r'^create_post/', views.create_post, name="create_post"),
     url(r'^logout/', views.logoutUser, name="logoutUser"),

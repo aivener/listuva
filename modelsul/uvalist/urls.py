@@ -42,7 +42,7 @@ urlpatterns = [
 
 
     url(r'^api/v1/post$', views.list_post, name="list_post"),
-    url(r'^api/v1/post/(?P<post_id>\d+)$', views.post, name="post"),
+    url(r'^api/v1/post/(\d+)$', views.post, name="post"),
     url(r'^api/v1/create_post/$', views.create_post, name="create_post"),
 
     url(r'^api/v1/comment$', views.list_comment, name="list_comment"),
