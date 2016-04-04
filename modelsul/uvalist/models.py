@@ -3,9 +3,10 @@ from django.db import models
 class Student(models.Model):
     email = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
-    gender = models.BooleanField()
+    # gender = models.BooleanField()
     year = models.IntegerField()
     password = models.CharField(max_length=100)
+    gender = models.CharField(max_length=10)
     def __str__(self):
     	return self.name
 

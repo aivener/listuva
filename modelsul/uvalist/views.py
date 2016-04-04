@@ -11,6 +11,7 @@ from django.conf import settings
 import datetime
 from django.utils.timezone import utc
 from django.contrib.auth import hashers
+from django import db
 from django.forms.models import model_to_dict
 
 def index(request):
@@ -160,17 +161,6 @@ def authenticator(request):
     result = serializers.serialize('json', Authenticator.objects.filter(user_id_id=u_id))
     return HttpResponse(result, content_type='json')
 
-# def get_user_by_authenticator(request, authenticator):
-#     if request.method != 'GET':
-#         return _error_response(request, "must make GET request")
-
-#     try:
-#         u = Authenticator.objects.get(authenticator=authenticator)
-#     except Authenticator.DoesNotExist:
-#         return _error_response(request, "authenticator not found")
-
-#     return JsonResponse({}, content_type="application/json")
-
 def create_student(request):
     #should add try catch statements
     if request.method != 'POST':
@@ -184,14 +174,16 @@ def create_student(request):
                 year = request.POST['year'],
                 password=hashers.make_password(str.strip(request.POST['password'])),
                 )
-
     try:
         s.save()
         result = serializers.serialize('json', Student.objects.filter(name=request.POST['name']))
+
         return HttpResponse(result, content_type='json')
 
+    # except db.Error:
     except db.Error:
-        return _success_response(request, {'user_id': s.pk})
+        return _error_response(request, "db error")
+    return _success_response(request, {'user_id': s.pk})
 
 
 def get_student(request, student_id):
@@ -214,7 +206,7 @@ def get_student(request, student_id):
 def student(request, student_id):
     if request.method == "POST":
         name = request.POST.get('name', 'name didnt work')
-        gender = request.POST.get('gender', 'False')
+        gender = request.POST.get('gender', 'default')
         year = request.POST.get('year', '123')
         email = request.POST.get('email', 'email didnt work')
         password = request.POST.get('password', 'password didnt work')

@@ -11,6 +11,7 @@ for val in data:
 	nums.append(val)
 	names.append(data[val])
 choices = zip(nums, names)
+genders = (('1', 'Male'), ('2', 'Female'))
 
 class LoginForm(forms.Form):
 	email = forms.CharField(required=True)
@@ -21,7 +22,7 @@ class SignUpForm(forms.Form):
 	password = forms.CharField(required=True, widget=forms.PasswordInput)
 	name = forms.CharField(required=True)
 	year = forms.IntegerField(required=True)
-	gender = forms.BooleanField(required=True)
+	gender = forms.CharField(required=True, widget=forms.Select(choices=genders))
 
 class CreatePostForm(forms.Form):
 	title = forms.CharField(required=True)
