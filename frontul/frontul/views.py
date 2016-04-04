@@ -52,10 +52,10 @@ def displaySubCatPosts(request,subCatID):
 	return render(request, 'subcatposts.html', {'cells_dict':deser, 'subCatName': deser1, 'catName': deser2})
 
 def displaySinglePost(request,postID):
-	# auth = request.COOKIES.get('auth')
-	# if not auth:
-	# 	# handle user not logged in while trying to see posts
-	# 	return HttpResponseRedirect(reverse("login"))
+	auth = request.COOKIES.get('auth')
+	if not auth:
+		# handle user not logged in while trying to see posts
+		return HttpResponseRedirect(reverse("login"))
 	c = requests.get('http://expul:8000/api/v1/getPost/' + postID)
 	ps = c.json()
 
