@@ -205,7 +205,6 @@ def create_listing_exp_api(request):
 
 def search_exp_api(request):
 	searchText = request.POST.get('searchText', 'default')
-	searchText = "allie"
 	es = Elasticsearch(['es'])
 	if(es.indices.exists('listing_index')):
 		result = es.search(index='listing_index', body={'query': {'query_string': {'query': searchText}}, 'size': 10})
