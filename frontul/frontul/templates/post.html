@@ -1,4 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+    <title>{% block title %}UVa List {% endblock %}</title>
+
+    <style>
+    #title
+    {
+      display: block;
+      padding: 14px 0 15px 0;
+      font-size: 60px;
+      font-weight: 100;
+      margin-bottom: 0px;
+      border-bottom: 2px solid;
+      color:#f0ad4e;
+    }
+
+    #title a {
+      color: #f0ad4e;
+    }
 
 {% block content %}
 <style>
@@ -18,6 +49,7 @@
 }
 </style>
 
+<body>
 <div class="container posts">
 
 <h4  class = "row headitem" id="titleCat">  {{cat.catName}} -> {{subcat.subcatName}} </h4>
@@ -43,3 +75,5 @@
 
 
 {% endblock %}
+
+</html>
