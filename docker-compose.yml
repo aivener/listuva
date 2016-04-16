@@ -57,6 +57,10 @@
 #       - "8003:8000"
 #    command: "python batch.py"
 
+#End of local yml file
+
+#Digital Ocean deployment yml starts here
+
 models:
    image: tp33/django-docker:1.3
    external_links:
