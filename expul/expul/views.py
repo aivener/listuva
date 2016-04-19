@@ -192,7 +192,7 @@ def create_listing_exp_api(request):
 	producer = KafkaProducer(bootstrap_servers='kafka:9092')
 	some_new_listing = {'title': title, 'description': summary, 'id':post.json()['id']}
 	producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
-	return JsonResponse(post, content_type="application/json")
+	return JsonResponse(post.json())
 
 def search_exp_api(request):
 	searchText = request.POST.get('searchText', 'default')

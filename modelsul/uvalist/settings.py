@@ -82,7 +82,7 @@ DATABASES = {
           'ENGINE': 'mysql.connector.django', # use this for docker
           'NAME': 'cs4501',
           'USER': 'www',
-          'PASSWORD': 'gohoos16',
+          'PASSWORD': 'S3cure',
           'HOST': 'db',
           }
       }
