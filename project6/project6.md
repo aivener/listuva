@@ -43,6 +43,7 @@ I tested a sequence of actions on our website through our local running of the a
 I tested the experience layer. My first objective was to get as much code coverage as possible. I got it up to 98% with 99% of the views.py being covered. 
 
 in order to run the tests 
+* load the test.json fixture into teh database
 * be inside the exp_layer container
 * pip install coverage
 * coverage run --source='.' manage.py test
