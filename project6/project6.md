@@ -37,3 +37,18 @@ I tested a sequence of actions on our website through our local running of the a
 
 ######Local 1000 users
 ![1000 users](./images/local-1000users.png)
+
+##Unit Testing
+
+I tested the experience layer. My first objective was to get as much code coverage as possible. I got it up to 98% with 99% of the views.py being covered. 
+
+in order to run the tests 
+* be inside teh exp_layer container
+* pip install coverage
+* coverage run --source='.' manage.py test
+* To see coverage percentage
+** coverage report -m
+* To see detail of coverage line by line
+** coverage html -d coverage
+
+Outside of doing coverage testing, I made sure that given typical responses that the correct output was given, but also tested for edge cases to see if abnormal cases returned the correct result
