@@ -40,11 +40,13 @@ I tested a sequence of actions on our website through our local running of the a
 
 ##Unit Testing
 
-I tested the experience layer. My first objective was to get as much code coverage as possible. I got it up to 98% with 99% of the views.py being covered. 
+I tested the experience layer. My first objective was to get as much code coverage as possible. I got it up to 98% with 99% of the views.py being covered. In order to properly run the tests, you must load the data in every time because we currenlty don't have a way to delete things from the exp layer.
 
-in order to run the tests 
-* load the test.json fixture into teh database
-* be inside the exp_layer container
+in order to run the tests
+* First be in models_layer container
+* load the testing.json fixture into the database
+    * python manage.py loaddata fixtures/testing.json
+* Then be inside the exp_layer container
 * pip install coverage
 * coverage run --source='.' manage.py test
 * To see coverage percentage
