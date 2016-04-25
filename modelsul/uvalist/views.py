@@ -109,8 +109,14 @@ def create_post(request):
     if 'title' not in request.POST:
         return _error_response(request, request.POST)
     student = Student(pk=request.POST['user_id'])
-    category = Category(pk=request.POST['category'])
-    subcategory = Subcategory(pk=request.POST['subcategory'])
+    if Category.objects.filter(pk=request.POST['category']).exists():
+        category = Category(pk=request.POST['category'])
+    else:
+        return _error_response(request, 'That category does not exist')
+    if Subcategory.objects.filter(pk=request.POST['subcategory']).exists():
+        subcategory = Subcategory(pk=request.POST['subcategory'])
+    else:
+        return _error_response(request, 'That subcategory does not exist')
 
     p = Post(student = student,
         title = request.POST['title'],
@@ -122,7 +128,7 @@ def create_post(request):
         subcategory =subcategory)
     p.save()
     post = model_to_dict(Post.objects.get(pk=p.pk))
-    return JsonResponse(post)
+    return _success_response(request, post)
 
 def list_comment(request):
     result = serializers.serialize('json', Comment.objects.all())

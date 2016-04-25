@@ -189,10 +189,13 @@ def create_listing_exp_api(request):
 																		"subcategory": subcategory,
 																		"summary": summary,
 																		"price":price})
-	producer = KafkaProducer(bootstrap_servers='kafka:9092')
-	some_new_listing = {'title': title, 'description': summary, 'id':post.json()['id']}
-	producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
-	return JsonResponse(post, content_type="application/json")
+	if  not post.json()['ok']:
+		return JsonResponse({})
+	else:
+		producer = KafkaProducer(bootstrap_servers='kafka:9092')
+		some_new_listing = {'title': title, 'description': summary, 'id':post.json()['resp']['id']}
+		producer.send('new-listings-topic', json.dumps(some_new_listing).encode('utf-8'))
+		return JsonResponse(post.json())
 
 def search_exp_api(request):
 	searchText = request.POST.get('searchText', 'default')

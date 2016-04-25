@@ -1,66 +1,3 @@
-# models:
-#    image: tp33/django-docker:1.3
-#    external_links:
-#       - mysql:db
-#    ports:
-#       - "8001:8000"
-#    volumes:
-#       - /Users/niti/ISA-Project/listuva/modelsul:/app
-#    command: "python manage.py runmodwsgi --reload-on-change"
-#
-# exp:
-#    image: tp33/django-docker:1.3
-#    links:
-#       - models:modelsul
-#       - kafka:kafka
-#       - es:es
-#    ports:
-#       - "8002:8000"
-#    volumes:
-#       - /Users/niti/ISA-Project/listuva/expul:/app
-#    command: bash -c "pip install requests && python manage.py runmodwsgi --reload-on-change"
-#
-# web:
-#    build: .
-#    links:
-#       - exp:expul
-#    ports:
-#       - "8000:8000"
-#    volumes:
-#       - /Users/niti/ISA-Project/listuva/frontul:/app
-#    command: "python manage.py runmodwsgi --reload-on-change"
-#
-# kafka:
-#    image: spotify/kafka
-#    container_name: kafka
-#    environment:
-#       ADVERTISED_HOST: kafka
-#       ADVERTISED_PORT: 9092
-#    hostname: kafka
-#
-# es:
-#    image: elasticsearch:2.0
-#    container_name: es
-#    ports:
-#       - "9200:9200"
-#
-# batch:
-#    image: tp33/django-docker:1.3
-#    container_name: batch
-#    links:
-#       - kafka:kafka
-#       - es:es
-#       # - exp:expul
-#    volumes:
-#       - /Users/niti/ISA-Project/listuva:/app
-#    ports:
-#       - "8003:8000"
-#    command: "python batch.py"
-
-#End of local yml file
-
-#Digital Ocean deployment yml starts here
-
 models:
    image: tp33/django-docker:1.3
    external_links:
@@ -68,7 +5,7 @@ models:
    ports:
       - "8001:8000"
    volumes:
-      - /root/listuva/modelsul:/app
+      - /Users/aivener/ISA-Project/modelsul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
 
 exp:
@@ -80,7 +17,7 @@ exp:
    ports:
       - "8002:8000"
    volumes:
-      - /root/listuva/expul:/app
+      - /Users/aivener/ISA-Project/expul:/app
    command: bash -c "pip install requests && python manage.py runmodwsgi --reload-on-change"
 
 web:
@@ -90,7 +27,7 @@ web:
    ports:
       - "8000:8000"
    volumes:
-      - /root/listuva/frontul:/app
+      - /Users/aivener/ISA-Project/frontul:/app
    command: "python manage.py runmodwsgi --reload-on-change"
 
 kafka:
@@ -115,7 +52,71 @@ batch:
       - es:es
       # - exp:expul
    volumes:
-      - /root/listuva:/app
+      - /Users/aivener/ISA-Project:/app
    ports:
       - "8003:8000"
    command: "python batch.py"
+
+
+#End of local yml file
+
+#Digital Ocean deployment yml starts here
+
+# models:
+#    image: tp33/django-docker:1.3
+#    external_links:
+#       - mysql:db
+#    ports:
+#       - "8001:8000"
+#    volumes:
+#       - /root/listuva/modelsul:/app
+#    command: "python manage.py runmodwsgi --reload-on-change"
+
+# exp:
+#    image: tp33/django-docker:1.3
+#    links:
+#       - models:modelsul
+#       - kafka:kafka
+#       - es:es
+#    ports:
+#       - "8002:8000"
+#    volumes:
+#       - /root/listuva/expul:/app
+#    command: bash -c "pip install requests && python manage.py runmodwsgi --reload-on-change"
+
+# web:
+#    build: .
+#    links:
+#       - exp:expul
+#    ports:
+#       - "8000:8000"
+#    volumes:
+#       - /root/listuva/frontul:/app
+#    command: "python manage.py runmodwsgi --reload-on-change"
+
+# kafka:
+#    image: spotify/kafka
+#    container_name: kafka
+#    environment:
+#       ADVERTISED_HOST: kafka
+#       ADVERTISED_PORT: 9092
+#    hostname: kafka
+
+# es:
+#    image: elasticsearch:2.0
+#    container_name: es
+#    ports:
+#       - "9200:9200"
+
+# batch:
+#    image: tp33/django-docker:1.3
+#    container_name: batch
+#    links:
+#       - kafka:kafka
+#       - es:es
+#       # - exp:expul
+#    volumes:
+#       - /root/listuva:/app
+#    ports:
+#       - "8003:8000"
+#    command: "python batch.py"
