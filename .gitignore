@@ -63,7 +63,7 @@ target/
 
 #Dockerstuff
 
-docker-compose.yml
+
 
 .idea/*
 */db.sqlite3
