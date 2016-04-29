@@ -15,14 +15,12 @@ data = sc.textFile("/tmp/data/data.txt", 2)       # each worker loads a piece of
 
 pairs = data.map(lambda line: line.split("\t"))   # tell each worker to split each line of it's partition
 pages = pairs.map(lambda pair: (pair[0], [pair[1]]))     # group data into (user_id, list of item ids they clicked on)
-count = pages.reduceByKey(lambda x,y: x+y)        # shuffle the data so that each key is only on one worker
-                                                  # and then reduce all the values by adding them together 
-                                                  #(make one list of items clicked)
+count = pages.groupByKey()        # creates list of all pages clicked for each key(name)
 
 output = count.collect()                          # bring the data back to the master node so we can print it out
-for page_id, count in output:
-	for item in count:
-		print ("page_id %s item %s" % (page_id, item))
+for page_id, count in output: #count is Iterable object of pages clicked by user
+	# for item in count:
+		print ("page_id %s count %s" % (page_id, count))
 print ("Popular items done")
 
 sc.stop()
