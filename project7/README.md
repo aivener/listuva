@@ -20,10 +20,10 @@ This will take input from inside the data.txt file found inside the data file an
 Currently, the job prints out 3 different data points onto the console (mostly to show why we get to our final results).
 
 * Step 4: Transform into ((item 1, item2), list of user 1, list of user 2 etc) where users are all the ones who co-clicked (item1, item2).
-  * Comment out lines 28-32 to remove these statments.
+  * Comment out lines 28-32 to remove these statements.
 
 * Step 5: Transform into ((item1, item2), count of distinct users who co-clicked (item1, item2)
- * Comment out lines 38-42 to remove these statments.
+ * Comment out lines 38-42 to remove these statements.
 
 * Step 6: Filters out any results where less than 3 users co-clicked the same pair of items.
  * This is the final result of the Apache Spark Map/Reduce Job
